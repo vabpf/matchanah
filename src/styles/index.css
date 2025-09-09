@@ -1,0 +1,11 @@
+/* Aggregated component style imports */
+@import './base.css';
+@import './header.css';
+@import './hero.css';
+@import './marquee.css';
+@import './products.css';
+@import './benefits.css';
+@import './how-it-works.css';
+@import './reviews.css';
+@import './final-cta.css';
+@import './responsive.css';

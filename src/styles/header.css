@@ -1,0 +1,77 @@
+/* Floating Header & Navigation */
+.floating-header {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    height: 40px;
+    width: auto;
+    border-radius: 8px;
+}
+
+.brand-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d5a3d;
+    letter-spacing: -0.5px;
+}
+
+.navigation .nav-list {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+    align-items: center;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    font-size: .95rem;
+    padding: 8px 16px;
+    border-radius: 12px;
+    transition: all .3s ease;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: #2d5a3d;
+    background: rgba(45, 90, 61, 0.1);
+}
+
+.cart-link {
+    background: #2d5a3d;
+    color: #fff !important;
+    border-radius: 12px;
+}
+
+.cart-link:hover {
+    background: #1e3d2a;
+}
+
+.main-content {
+    padding-top: 100px;
+}

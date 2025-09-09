@@ -1,0 +1,81 @@
+/* Marquee */
+.marquee-wrapper {
+    background: #3A5834;
+    padding: 6px 0;
+    overflow: hidden;
+    position: relative;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.scroller {
+    width: 100%;
+    margin-inline: auto;
+    position: relative;
+    overflow: hidden;
+    --gap: 2.5rem;
+    -webkit-mask: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    mask: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+.scroller[data-animated="true"] .scroller__inner {
+    width: max-content;
+    flex-wrap: nowrap;
+    animation: scroll var(--_animation-duration, 38s) var(--_animation-direction, forwards) linear infinite;
+}
+
+.scroller[data-direction="right"] {
+    --_animation-direction: reverse;
+}
+
+.scroller[data-direction="left"] {
+    --_animation-direction: forwards;
+}
+
+.scroller[data-speed="fast"] {
+    --_animation-duration: 24s;
+}
+
+.scroller[data-speed="slow"] {
+    --_animation-duration: 60s;
+}
+
+.scroller__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+    padding-block: .4rem;
+    font-size: .95rem;
+    font-weight: 500;
+}
+
+.scroller__item {
+    list-style: none;
+}
+
+.marquee-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    padding: .55rem 1.25rem;
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    white-space: nowrap;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.25);
+}
+
+.marquee-chip:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    transition: all .35s ease;
+}
+
+@keyframes scroll {
+    to {
+        transform: translate(calc(-50% - (var(--gap) / 2)));
+    }
+}

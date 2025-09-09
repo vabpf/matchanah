@@ -1,0 +1,49 @@
+/* Final CTA */
+.final-cta {
+    background: linear-gradient(135deg, #2d5a3d 0%, #3a5834 40%, #5b8a5f 100%);
+    padding: 100px 0;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.final-cta:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.12), transparent 60%);
+    opacity: .9;
+    pointer-events: none;
+}
+
+.final-cta-inner {
+    max-width: 980px;
+}
+
+.final-cta-text {
+    max-width: 620px;
+}
+
+.final-cta-text h2 {
+    font-size: 3rem;
+    line-height: 1.05;
+    margin: 0 0 28px;
+    font-weight: 900;
+}
+
+.final-cta-text p {
+    font-size: 1.15rem;
+    line-height: 1.5;
+    margin: 0 0 38px;
+    opacity: .92;
+}
+
+.final-cta .hero-cta-button {
+    background: #f7c433;
+    color: #2d5a3d;
+}
+
+.final-cta .hero-cta-button:hover {
+    background: #fff;
+    color: #2d5a3d;
+}
