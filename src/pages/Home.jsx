@@ -7,9 +7,74 @@ const Home = () => {
   return (
     <div className="home-page">
       <Header />
-      <main className="main-content">
+      <main>
         <Hero />
         
+
+    {/* Featured Products Section */}
+    <section className="featured-products" id="find-your-matcha">
+          <div className="container">
+      <h2 className="section-title">TOP SẢN PHẨM BÁN CHẠY</h2>
+            <div className="product-carousel">
+              <div className="product-card">
+                <div className="product-image">
+                  <img src="/api/placeholder/300/300" alt="Hộp Matcha Hỗn Hợp" />
+                  <span className="discount-badge">Tiết kiệm 33%</span>
+                </div>
+                <div className="product-details">
+                  <div className="product-rating">
+                    ⭐⭐⭐⭐⭐
+                  </div>
+                  <div className="product-info">
+                    <h3 className="product-title">Combo Matcha Natsu full dụng cụ</h3>
+                    <div className="product-price">
+                      <span className="current-price">199.000₫</span>
+                      <span className="original-price">300.000₫</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="product-card">
+                <div className="product-image">
+                  <img src="/api/placeholder/300/300" alt="Hộp Matcha Kem" />
+                  <span className="discount-badge">Tiết kiệm 33%</span>
+                </div>
+                <div className="product-details">
+                  <div className="product-rating">
+                    ⭐⭐⭐⭐⭐
+                  </div>
+                  <div className="product-info">
+                    <h3 className="product-title">Combo 3 loại Matcha 200g</h3>
+                    <div className="product-price">
+                      <span className="current-price">199.000₫</span>
+                      <span className="original-price">300.000₫</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="product-card">
+                <div className="product-image">
+                  <img src="/api/placeholder/300/300" alt="Hộp Matcha Trái Cây" />
+                  <span className="discount-badge">Tiết kiệm 33%</span>
+                </div>
+                <div className="product-details">
+                  <div className="product-rating">
+                    ⭐⭐⭐⭐⭐
+                  </div>
+                  <div className="product-info">
+                    <h3 className="product-title">Combo Matcha Natsu kèm sữa</h3>
+                    <div className="product-price">
+                      <span className="current-price">199.000₫</span>
+                      <span className="original-price">300.000₫</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
         {/* Marquee Section (smooth infinite) */}
         <section className="marquee-wrapper" aria-label="Thông tin lợi ích đồ uống matcha đóng chai">
           <Marquee
@@ -28,72 +93,6 @@ const Home = () => {
               <span className="marquee-chip" key={text}>{text}</span>
             ))}
           />
-        </section>
-
-    {/* Featured Products Section */}
-    <section className="featured-products" id="find-your-matcha">
-          <div className="container">
-      <h2 className="section-title">Chọn Hương Vị Matcha Của Bạn</h2>
-            
-            <div className="product-carousel">
-              <div className="product-card">
-                <div className="product-image">
-                  <img src="/api/placeholder/300/300" alt="Hộp Matcha Hỗn Hợp" />
-                  <span className="discount-badge">Tiết kiệm 37%</span>
-                </div>
-                <div className="product-details">
-                  <div className="product-rating">
-                    ⭐⭐⭐⭐⭐
-                  </div>
-                  <div className="product-info">
-                    <h3 className="product-title">Combo Hỗn Hợp 6 Chai</h3>
-                    <div className="product-price">
-                      <span className="current-price">$79</span>
-                      <span className="original-price">$126</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="product-card">
-                <div className="product-image">
-                  <img src="/api/placeholder/300/300" alt="Hộp Matcha Kem" />
-                  <span className="discount-badge">Tiết kiệm 37%</span>
-                </div>
-                <div className="product-details">
-                  <div className="product-rating">
-                    ⭐⭐⭐⭐⭐
-                  </div>
-                  <div className="product-info">
-                    <h3 className="product-title">Combo Creamy 6 Chai</h3>
-                    <div className="product-price">
-                      <span className="current-price">$79</span>
-                      <span className="original-price">$126</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="product-card">
-                <div className="product-image">
-                  <img src="/api/placeholder/300/300" alt="Hộp Matcha Trái Cây" />
-                  <span className="discount-badge">Tiết kiệm 37%</span>
-                </div>
-                <div className="product-details">
-                  <div className="product-rating">
-                    ⭐⭐⭐⭐⭐
-                  </div>
-                  <div className="product-info">
-                    <h3 className="product-title">Combo Fruity 6 Chai</h3>
-                    <div className="product-price">
-                      <span className="current-price">$79</span>
-                      <span className="original-price">$126</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </section>
         {/* Benefits Grid */}
         <section className="benefits-section" aria-label="Lợi ích chính">

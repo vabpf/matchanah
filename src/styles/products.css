@@ -1,14 +1,16 @@
 /* Featured Products */
 .featured-products {
     padding: 70px 0;
-    background: #fff;
+    background: #F6ECDC;
+    position: relative;
+    z-index: 3;
 }
 
 .section-title {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 900;
     text-align: center;
-    color: #3a5834;
+    color: #4C5D3D;
     margin: 0 0 50px;
 }
 
@@ -59,7 +61,7 @@
     position: absolute;
     bottom: 15px;
     left: 15px;
-    background: #3a5834;
+    background: #4C5D3D;
     color: #fff;
     padding: 6px 12px;
     border-radius: 15px;
@@ -68,7 +70,7 @@
 }
 
 .product-details {
-    padding: 20px 0;
+    padding: 20px;
 }
 
 .product-rating {
@@ -84,26 +86,26 @@
 }
 
 .product-title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #333;
-    margin: 0;
     text-align: left;
+    padding-right: 15px;
 }
 
 .product-price {
     text-align: right;
+    display: grid;
 }
 
 .current-price {
-    font-size: 1.6rem;
+    /* font-size: 1.6rem; */
     font-weight: 700;
     color: #000;
-    margin-right: 8px;
 }
 
 .original-price {
-    font-size: 1.1rem;
+    /* font-size: 1.1rem; */
     color: #666;
     text-decoration: line-through;
 }

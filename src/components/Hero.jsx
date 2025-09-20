@@ -1,4 +1,5 @@
 import React from 'react';
+import heroImage from '../assets/images/hero.jpg';
 
 const Hero = () => {
   return (
@@ -6,20 +7,30 @@ const Hero = () => {
       <div className="hero-banner-container">
         <div className="hero-image-container">
           <img 
-            src="../assets/images/hero-banner-image.jpg" 
+            src={heroImage} 
             alt="Matcha Đồ Uống Matcha Đóng Chai" 
             className="hero-banner-image"
             loading="lazy"
           />
-          <div className="hero-content-overlay">
+          <div className="hero-gradient-overlay" />
+          <div className="hero-black-overlay" />
+          <div className="hero-text-container">
             <div className="hero-text">
-              <h2 className="hero-subtitle"></h2>
-              <h1 className="hero-main-title">MATCHANAH DRINKS</h1>
+              <h1 className="hero-main-title">
+                Tạo nên hương <br />
+                vị matcha của <br />
+                riêng bạn
+              </h1>
               <p className="hero-description">
-                Đồ uống matcha pha sẵn lạnh – sạch, ít đường,<br />
-                năng lượng bền vững & hương vị tươi mát tự nhiên.
+                Matchanah cung cấp cho bạn giải pháp tuyệt vời thay thế cafein
               </p>
-              <a href="#find-your-matcha" className="hero-cta-button">Khám phá hương vị</a>
+              <div className="hero-cta-buttons">
+                <a href="#products" className="hero-cta-button">Mua ngay</a>
+                <a href="#how-it-works" className="hero-cta-link">
+                  <div className="span">Tìm hiểu thêm</div>
+                  
+                </a>
+              </div>
             </div>
           </div>
         </div>

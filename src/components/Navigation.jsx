@@ -11,7 +11,7 @@ const Navigation = () => {
           <a href="#products" className="nav-link">Sản phẩm</a>
         </li>
         <li className="nav-item">
-          <a href="#about" className="nav-link">Về chúng tôi</a>
+          <a href="#about" className="nav-link">Hỏi đáp</a>
         </li>
         <li className="nav-item">
           <a href="#contact" className="nav-link">Liên hệ</a>
