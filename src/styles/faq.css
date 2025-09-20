@@ -1,8 +1,14 @@
-
 .faq-section {
   background-color: #fcf8ee;
   padding: 40px 20px;
-  font-family: 'Rethink Sans', sans-serif;
+}
+
+.page-header {
+    text-align: center;
+    font-size: 3rem;
+    color: #3a5834;
+    margin-bottom: 10px;
+    margin-top: 100px;
 }
 
 .faq-section h2 {
@@ -10,7 +16,6 @@
   font-size: 2.5rem;
   color: #3a5834;
   margin-bottom: 30px;
-  font-family: 'basic-sans-black', sans-serif;
 }
 
 .faq-container {

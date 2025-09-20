@@ -1,7 +1,8 @@
-
 import React, { useState } from 'react';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
-const Faq = () => {
+const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
 
   const faqs = [
@@ -29,7 +30,6 @@ const Faq = () => {
       question: 'Làm thế nào để bảo quản matcha?',
       answer: 'Để giữ matcha luôn tươi mới, hãy bảo quản trong hộp kín ở nơi khô ráo, thoáng mát, tránh ánh sáng trực tiếp. Tủ lạnh là một lựa chọn tuyệt vời để duy trì hương vị và chất dinh dưỡng của nó.',
     },
-
   ];
 
   const toggleFaq = (index) => {
@@ -37,22 +37,39 @@ const Faq = () => {
   };
 
   return (
-    <section className="faq-section">
-      <div className="container">
-        <h2>Các câu hỏi thường gặp</h2>
-        <div className="faq-list">
-          {faqs.map((faq, index) => (
-            <div className={`faq-item ${openIndex === index ? 'open' : ''}`} key={index}>
-              <button className="faq-question" onClick={() => toggleFaq(index)}>{faq.question}</button>
-              <div className="faq-answer" style={{ display: openIndex === index ? 'block' : 'none' }}>
-                <p>{faq.answer}</p>
-              </div>
+    <div className="faq-page">
+      <Header />
+      <main className="faq-main">
+        <section className="page-header">
+          <div className="container">
+            <h1 className="page-title">Câu hỏi thường gặp</h1>
+            <p className="page-subtitle">
+              Tìm hiểu thêm về matcha và sản phẩm của Matchanah
+            </p>
+          </div>
+        </section>
+        
+        <section className="faq-section">
+          <div className="container">
+            <h2>Các câu hỏi thường gặp</h2>
+            <div className="faq-list">
+              {faqs.map((faq, index) => (
+                <div className={`faq-item ${openIndex === index ? 'open' : ''}`} key={index}>
+                  <button className="faq-question" onClick={() => toggleFaq(index)}>
+                    {faq.question}
+                  </button>
+                  <div className="faq-answer" style={{ display: openIndex === index ? 'block' : 'none' }}>
+                    <p>{faq.answer}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
   );
 };
 
-export default Faq;
+export default FAQ;

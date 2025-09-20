@@ -10,8 +10,6 @@
   .hero-main-title { font-size:2.5rem; line-height:2.2rem; }
   .hero-description { font-size:1rem; line-height:1.3; }
   .hero-cta-button { font-size:1rem; padding:12px 30px; }
-  .section-title { font-size:2rem; margin-bottom:30px; }
-  .product-carousel { grid-template-columns:1fr; gap:20px; padding:0 10px; }
   .navigation .nav-list { gap:15px; }
   .nav-link { font-size:.85rem; padding:4px 8px; }
   .brand-name { font-size:1.3rem; }
@@ -27,7 +25,6 @@
   .benefit-card { padding:16px 18px 18px; }
   .benefit-card h3 { font-size:.95rem; }
   .benefit-card p { font-size:.75rem; }
-  .section-title.small { font-size:1.6rem; }
   .final-cta { padding:70px 0; }
 }
 @media (max-width:500px){
@@ -42,7 +39,6 @@
   .hero-text { max-width:50%; }
   .hero-main-title { font-size:3.5rem; line-height:3rem; }
   .hero-description { font-size:1.4rem; }
-  .section-title { font-size:2.5rem; }
   .navigation .nav-list { gap:20px; }
   .nav-link { font-size:.9rem; padding:6px 12px; }
 }

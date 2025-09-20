@@ -1,23 +1,67 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 const Navigation = () => {
+  const location = useLocation();
+  const { getCartItemCount } = useCart();
+  
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
+  const cartItemCount = getCartItemCount();
+
   return (
     <nav className="navigation">
       <ul className="nav-list">
         <li className="nav-item">
-          <a href="#home" className="nav-link">Trang chủ</a>
+          <Link 
+            to="/" 
+            className={`nav-link ${isActive('/') ? 'active' : ''}`}
+          >
+            Trang chủ
+          </Link>
         </li>
         <li className="nav-item">
-          <a href="#products" className="nav-link">Sản phẩm</a>
+          <Link 
+            to="/products" 
+            className={`nav-link ${isActive('/products') ? 'active' : ''}`}
+          >
+            Sản phẩm
+          </Link>
         </li>
         <li className="nav-item">
-          <a href="#about" className="nav-link">Hỏi đáp</a>
+          <Link 
+            to="/about" 
+            className={`nav-link ${isActive('/about') ? 'active' : ''}`}
+          >
+            Giới thiệu
+          </Link>
         </li>
         <li className="nav-item">
-          <a href="#contact" className="nav-link">Liên hệ</a>
+          <Link 
+            to="/faq" 
+            className={`nav-link ${isActive('/faq') ? 'active' : ''}`}
+          >
+            FAQ
+          </Link>
         </li>
         <li className="nav-item">
-          <a href="#cart" className="nav-link cart-link">Giỏ hàng (0)</a>
+          <Link 
+            to="/contact" 
+            className={`nav-link ${isActive('/contact') ? 'active' : ''}`}
+          >
+            Liên hệ
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link 
+            to="/cart" 
+            className={`nav-link cart-link ${isActive('/cart') ? 'active' : ''}`}
+          >
+            Giỏ hàng ({cartItemCount})
+          </Link>
         </li>
       </ul>
     </nav>
