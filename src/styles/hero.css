@@ -64,7 +64,7 @@
 
 .hero-description {
     font-size: 0.9rem;
-    color: #f0eadf;
+    color: #F6ECDC;
     font-weight: 500;
     line-height: 1.5;
     margin: 0 0 40px;
@@ -89,13 +89,13 @@
 }
 
 .hero-cta-button:hover {
-    background: #f0eadf;
+    background: #F6ECDC;
     color: #000;
     transform: translateY(-3px);
 }
 
 .hero-cta-link .span {
-    color: #f0eadf;
+    color: #F6ECDC;
     font-size: 1.1rem;
     font-weight: 600;
     transition: all .3s ease;
