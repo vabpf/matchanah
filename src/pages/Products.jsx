@@ -105,9 +105,9 @@ const Products = () => {
         <section className="products-header">
           <div className="container">
             <h1 className="page-title">Sản phẩm của chúng tôi</h1>
-            <p className="page-subtitle">
+            {/* <p className="page-subtitle">
               Khám phá bộ sưu tập matcha cao cấp từ Nhật Bản dành cho sinh viên
-            </p>
+            </p> */}
           </div>
         </section>
 
@@ -115,13 +115,30 @@ const Products = () => {
         <section className="products-controls">
           <div className="container">
             <div className="controls-wrapper">
-              {/* Search Bar */}
-              <div className="search-section">
-                <SearchBar 
-                  onSearch={handleSearch}
-                  placeholder="Tìm kiếm sản phẩm matcha..."
-                  value={searchQuery}
-                />
+              {/* Search and Sort Row */}
+              <div className="search-sort-row">
+                <div className="search-section">
+                  <SearchBar 
+                    onSearch={handleSearch}
+                    placeholder="Tìm kiếm sản phẩm matcha..."
+                    value={searchQuery}
+                  />
+                </div>
+                <div className="sort-section">
+                  <label htmlFor="sort-select">Sắp xếp theo:</label>
+                  <select 
+                    id="sort-select"
+                    value={sortBy} 
+                    onChange={(e) => handleSortChange(e.target.value)}
+                    className="sort-select"
+                  >
+                    <option value="featured">Nổi bật</option>
+                    <option value="price-low">Giá thấp đến cao</option>
+                    <option value="price-high">Giá cao đến thấp</option>
+                    <option value="name">Tên A-Z</option>
+                    <option value="rating">Đánh giá cao nhất</option>
+                  </select>
+                </div>
               </div>
 
               {/* Category Filters */}
@@ -135,23 +152,6 @@ const Products = () => {
                     {category.name}
                   </button>
                 ))}
-              </div>
-
-              {/* Sort Options */}
-              <div className="sort-section">
-                <label htmlFor="sort-select">Sắp xếp theo:</label>
-                <select 
-                  id="sort-select"
-                  value={sortBy} 
-                  onChange={(e) => handleSortChange(e.target.value)}
-                  className="sort-select"
-                >
-                  <option value="featured">Nổi bật</option>
-                  <option value="price-low">Giá thấp đến cao</option>
-                  <option value="price-high">Giá cao đến thấp</option>
-                  <option value="name">Tên A-Z</option>
-                  <option value="rating">Đánh giá cao nhất</option>
-                </select>
               </div>
             </div>
           </div>

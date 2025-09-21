@@ -12,7 +12,7 @@
 .products-header {
     background: linear-gradient(135deg, #2d5a3d 0%, #4a7c59 100%);
     color: white;
-    padding: 80px 0 60px;
+    padding: 88px 0 20px;
     text-align: center;
 }
 
@@ -41,17 +41,36 @@
 /* Products Controls */
 .products-controls {
     background: #F6ECDC;
-    padding: 40px 0;
+    padding: 30px 0;
     border-bottom: 1px solid #e0e0e0;
 }
 
 .controls-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+/* New: Search and Sort Row */
+.search-sort-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .search-sort-row {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
 }
 
 /* Search Section */
@@ -73,6 +92,7 @@
     border-radius: 25px;
     border: 2px solid #2d5a3d;
     overflow: hidden;
+    width: 500px;
 }
 
 .search-input {
@@ -82,6 +102,7 @@
     outline: none;
     font-size: 1rem;
     background: transparent;
+    color: #333;
 }
 
 .search-input::placeholder {
@@ -199,8 +220,8 @@
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
     margin-bottom: 40px;
 }
 
@@ -280,7 +301,7 @@
     position: relative;
     overflow: hidden;
     border-radius: 20px 20px 0 0;
-    height: 250px;
+    height: 200px;
     background: #f9f9f9;
 }
 
@@ -343,14 +364,14 @@
 }
 
 .product-details {
-    padding: 25px;
+    padding: 18px;
 }
 
 .product-rating {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
+    gap: 8px;
+    margin-bottom: 12px;
 }
 
 .stars {
@@ -359,7 +380,7 @@
 }
 
 .star {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: #ddd;
 }
 
@@ -373,7 +394,7 @@
 }
 
 .review-count {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: #666;
 }
 
@@ -381,12 +402,12 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 15px;
-    gap: 15px;
+    margin-bottom: 12px;
+    gap: 12px;
 }
 
-.product-title {
-    font-size: 1.3rem;
+h3.product-title {
+    font-size: 1.1rem;
     font-weight: 700;
     color: #333;
     line-height: 1.3;
@@ -394,21 +415,21 @@
     flex: 1;
 }
 
-.product-price {
+.product-card .product-price {
     text-align: right;
     flex-shrink: 0;
 }
 
-.current-price {
+.card-current-price {
     display: block;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #2d5a3d;
 }
 
-.original-price {
+.card-original-price {
     display: block;
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: #999;
     text-decoration: line-through;
     margin-top: 2px;
@@ -416,9 +437,9 @@
 
 .product-description {
     color: #666;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: 15px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 12px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
@@ -428,16 +449,16 @@
 
 .combo-items {
     background: #f8f9fa;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
 }
 
 .combo-items h4 {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: #2d5a3d;
-    margin: 0 0 8px 0;
+    margin: 0 0 6px 0;
 }
 
 .combo-items ul {
@@ -447,10 +468,10 @@
 }
 
 .combo-items li {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: #666;
-    margin-bottom: 4px;
-    padding-left: 12px;
+    margin-bottom: 3px;
+    padding-left: 10px;
     position: relative;
 }
 
@@ -467,17 +488,17 @@
 }
 
 .product-actions {
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .add-to-cart-btn {
     width: 100%;
-    padding: 12px 20px;
+    padding: 10px 16px;
     background: #2d5a3d;
     color: white;
     border: none;
-    border-radius: 10px;
-    font-size: 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -564,11 +585,11 @@
         padding: 20px;
     }
     
-    .product-title {
+    h3.product-title {
         font-size: 1.1rem;
     }
     
-    .current-price {
+    .card-current-price {
         font-size: 1.2rem;
     }
     
@@ -601,7 +622,7 @@
         gap: 10px;
     }
     
-    .product-price {
+    .product-card .product-price {
         text-align: left;
     }
     

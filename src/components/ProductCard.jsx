@@ -88,9 +88,9 @@ const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
         <div className="product-info">
           <h3 className="product-title">{name}</h3>
           <div className="product-price">
-            <span className="current-price">{formatPrice(price)}</span>
+            <span className="card-current-price">{formatPrice(price)}</span>
             {originalPrice && originalPrice > price && (
-              <span className="original-price">{formatPrice(originalPrice)}</span>
+              <span className="card-original-price">{formatPrice(originalPrice)}</span>
             )}
           </div>
         </div>

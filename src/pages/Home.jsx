@@ -26,7 +26,7 @@ const Home = () => {
           <div className="container">
             <h2 className="section-title">TOP SẢN PHẨM BÁN CHẠY</h2>
             <div className="product-carousel">
-              <div className="product-card">
+              <div className="featured-product-card">
                 <div className="product-image">
                   <img src="/api/placeholder/300/300" alt="Hộp Matcha Hỗn Hợp" />
                   <span className="discount-badge">Tiết kiệm 33%</span>
@@ -45,7 +45,7 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="product-card">
+              <div className="featured-product-card">
                 <div className="product-image">
                   <img src="/api/placeholder/300/300" alt="Hộp Matcha Kem" />
                   <span className="discount-badge">Tiết kiệm 33%</span>
@@ -64,7 +64,7 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="product-card">
+              <div className="featured-product-card">
                 <div className="product-image">
                   <img src="/api/placeholder/300/300" alt="Hộp Matcha Trái Cây" />
                   <span className="discount-badge">Tiết kiệm 33%</span>

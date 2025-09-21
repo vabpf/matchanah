@@ -1,6 +1,6 @@
 .faq-section {
   background-color: #fcf8ee;
-  padding: 40px 20px;
+  padding: 40px;
 }
 
 .page-header {
@@ -86,7 +86,7 @@
 }
 
 .faq-answer {
-  padding: 0 20px 15px;
+  padding: 20px 30px;
   line-height: 1.6;
 }
 

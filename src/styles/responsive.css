@@ -19,6 +19,12 @@
   .hiw-text h2 { font-size:2rem; }
   .final-cta-text h2 { font-size:2.3rem; }
   .final-cta-text p { font-size:1rem; }
+  /* Product Grid Responsive */
+  .grid-container { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+  .product-image { height: 180px; }
+  .product-details { padding: 15px; }
+  .product-title { font-size: 1rem; }
+  .current-price { font-size: 1.1rem; }
 }
 @media (max-width:640px){
   .benefits-grid { grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:18px; }
@@ -26,12 +32,22 @@
   .benefit-card h3 { font-size:.95rem; }
   .benefit-card p { font-size:.75rem; }
   .final-cta { padding:70px 0; }
+  /* Product Grid Mobile */
+  .grid-container { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .product-image { height: 150px; }
+  .product-details { padding: 12px; }
+  .product-title { font-size: 0.9rem; }
+  .current-price { font-size: 1rem; }
+  .product-description { font-size: 0.8rem; }
+  .add-to-cart-btn { padding: 8px 12px; font-size: 0.85rem; }
 }
 @media (max-width:500px){
   .hero-text { max-width:70%; top:60%; }
   .hero-main-title { font-size:2rem; line-height:1.8rem; }
   .hero-description { font-size:.9rem; }
   .hero-cta-button { font-size:.9rem; padding:10px 25px; }
+  /* Product Grid Very Small */
+  .grid-container { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
 }
 @media (max-width:968px){
   .floating-header { width:98%; top:10px; }
@@ -41,4 +57,13 @@
   .hero-description { font-size:1.4rem; }
   .navigation .nav-list { gap:20px; }
   .nav-link { font-size:.9rem; padding:6px 12px; }
+}
+
+/* Large screens - ensure 4 columns */
+@media (min-width: 1200px) {
+  .grid-container { grid-template-columns: repeat(4, 1fr); gap: 25px; }
+}
+
+@media (min-width: 1400px) {
+  .grid-container { grid-template-columns: repeat(4, 1fr); gap: 30px; max-width: 1200px; margin: 0 auto 40px; }
 }
