@@ -55,7 +55,7 @@
 
 .hero-main-title {
     font-size: 3.5rem;
-    color: #d4ff00;
+    color: #F6ECDC;
     font-weight: 900;
     line-height: 1.1;
     margin: 0 0 20px;
@@ -77,20 +77,21 @@
 }
 
 .hero-cta-button {
-    background: #d4ff00;
+    background: #2d5a3d;
     border-radius: 20px;
-    color: #000;
+    color: #F6ECDC;
     font-size: 1.1rem;
     font-weight: 700;
     padding: 10px 45px;
     display: inline-block;
     transition: all .3s ease;
     cursor: pointer;
+    border: 2px solid #F6ECDC;
 }
 
 .hero-cta-button:hover {
-    background: #F6ECDC;
-    color: #000;
+    background: #f7c433;
+    color: #2d5a3d;
     transform: translateY(-3px);
 }
 
@@ -103,6 +104,6 @@
 }
 
 .hero-cta-link .span:hover {
-    color: #d4ff00;
+    color: #f7c433;
     font-style: italic;
 }
