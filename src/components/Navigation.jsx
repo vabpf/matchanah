@@ -13,7 +13,7 @@ const Navigation = () => {
   const cartItemCount = getCartItemCount();
 
   return (
-    <nav className="navigation">
+    <nav className="navigation desktop-nav">
       <ul className="nav-list">
         <li className="nav-item">
           <Link 
