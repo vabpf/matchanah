@@ -9,6 +9,8 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import CartPage from './pages/CartPage'
 import Checkout from './pages/Checkout'
+import QRPayment from './pages/QRPayment'
+import OrderSuccess from './pages/OrderSuccess'
 import Account from './pages/Account'
 import ProductDetail from './pages/ProductDetail'
 import NotFound from './pages/NotFound'
@@ -33,6 +35,8 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/qr-payment" element={<QRPayment />} />
+              <Route path="/order-success" element={<OrderSuccess />} />
               <Route path="/account" element={<Account />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

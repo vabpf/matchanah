@@ -1,0 +1,156 @@
+/* Order Progress Bar Styles */
+.order-progress-container {
+  margin: 40px 0 20px;
+}
+
+.order-progress {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.order-step {
+  text-align: center;
+  position: relative;
+  flex: 1;
+  z-index: 1;
+}
+
+.order-step .circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin: 0 auto 8px;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 2px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.order-step.active .circle {
+  background-color: #4CAF50;
+  border-color: #4CAF50;
+}
+
+.order-step .label {
+  font-size: 0.85rem;
+  color: #888;
+  font-weight: 500;
+  max-width: 80px;
+  margin: 0 auto;
+  line-height: 1.2;
+}
+
+.order-step.active .label {
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+/* Progress line */
+.order-progress::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 50px;
+  right: 50px;
+  height: 2px;
+  background-color: #e0e0e0;
+  z-index: 0;
+}
+
+.order-progress-fill {
+  position: absolute;
+  top: 12px;
+  left: 50px;
+  height: 2px;
+  background-color: #4CAF50;
+  z-index: 0;
+  transition: width 0.5s ease;
+}
+
+/* Cancelled state */
+.order-progress.cancelled {
+  justify-content: center;
+}
+
+.order-progress.cancelled::before {
+  display: none;
+}
+
+.cancelled-step .circle {
+  background-color: #f44336;
+  border-color: #f44336;
+}
+
+.cancelled-step .label {
+  color: #f44336;
+  font-weight: 600;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .order-progress {
+    padding: 0 5px;
+  }
+  
+  .order-step .circle {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .order-step .label {
+    font-size: 0.75rem;
+    max-width: 60px;
+  }
+  
+  .order-progress::before {
+    left: 30px;
+    right: 30px;
+    top: 10px;
+  }
+  
+  .order-progress-fill {
+    left: 30px;
+    top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-progress {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  
+  .order-progress::before {
+    display: none;
+  }
+  
+  .order-progress-fill {
+    display: none;
+  }
+  
+  .order-step {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .order-step .circle {
+    margin: 0;
+    flex-shrink: 0;
+  }
+  
+  .order-step .label {
+    margin: 0;
+    max-width: none;
+    flex: 1;
+  }
+}
