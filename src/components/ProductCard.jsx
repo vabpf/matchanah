@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
+  const [showAllItems, setShowAllItems] = useState(false);
+  const [showTooltip, setShowTooltip] = useState({ show: false, content: '', x: 0, y: 0 });
+
   const {
     id,
     name,
@@ -56,6 +59,30 @@ const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
     }
   };
 
+  const handleMouseEnter = (e, content) => {
+    const rect = e.target.getBoundingClientRect();
+    setShowTooltip({
+      show: true,
+      content,
+      x: rect.left + rect.width / 2,
+      y: rect.top - 10
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setShowTooltip({ show: false, content: '', x: 0, y: 0 });
+  };
+
+  const toggleItemsDisplay = (e) => {
+    e.stopPropagation();
+    setShowAllItems(!showAllItems);
+  };
+
+  const truncateText = (text, maxLength) => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
+
   return (
     <div className="product-card" onClick={handleViewDetails}>
       <div className="product-image">
@@ -86,7 +113,13 @@ const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
         </div>
         
         <div className="product-info">
-          <h3 className="product-title">{name}</h3>
+          <h3 
+            className="product-title"
+            onMouseEnter={name.length > 50 ? (e) => handleMouseEnter(e, name) : undefined}
+            onMouseLeave={name.length > 50 ? handleMouseLeave : undefined}
+          >
+            {truncateText(name, 50)}
+          </h3>
           <div className="product-price">
             <span className="card-current-price">{formatPrice(price)}</span>
             {originalPrice && originalPrice > price && (
@@ -95,17 +128,40 @@ const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
           </div>
         </div>
         
-        <p className="product-description">{description}</p>
+        <p 
+          className="product-description"
+          onMouseEnter={description.length > 80 ? (e) => handleMouseEnter(e, description) : undefined}
+          onMouseLeave={description.length > 80 ? handleMouseLeave : undefined}
+        >
+          {truncateText(description, 80)}
+        </p>
         
         {category === 'combo' && items && (
           <div className="combo-items">
             <h4>Bao gồm:</h4>
             <ul>
-              {items.slice(0, 2).map((item, index) => (
+              {(showAllItems ? items : items.slice(0, 2)).map((item, index) => (
                 <li key={index}>{item}</li>
               ))}
-              {items.length > 2 && (
-                <li className="more-items">... và {items.length - 2} sản phẩm khác</li>
+              {items.length > 2 && !showAllItems && (
+                <li className="more-items">
+                  <button 
+                    className="show-more-btn" 
+                    onClick={toggleItemsDisplay}
+                  >
+                    + {items.length - 2} sản phẩm khác
+                  </button>
+                </li>
+              )}
+              {showAllItems && items.length > 2 && (
+                <li className="more-items">
+                  <button 
+                    className="show-less-btn" 
+                    onClick={toggleItemsDisplay}
+                  >
+                    Thu gọn
+                  </button>
+                </li>
               )}
             </ul>
           </div>
@@ -124,6 +180,22 @@ const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
           </button>
         </div>
       </div>
+      
+      {/* Tooltip */}
+      {showTooltip.show && (
+        <div 
+          className="product-tooltip"
+          style={{
+            position: 'fixed',
+            left: showTooltip.x,
+            top: showTooltip.y,
+            transform: 'translateX(-50%)',
+            zIndex: 1000
+          }}
+        >
+          {showTooltip.content}
+        </div>
+      )}
     </div>
   );
 };

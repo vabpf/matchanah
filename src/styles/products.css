@@ -223,6 +223,7 @@
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 20px;
     margin-bottom: 40px;
+    align-items: stretch; /* Ensure all cards have the same height */
 }
 
 .grid-footer {
@@ -290,6 +291,9 @@
     transition: all 0.3s ease;
     cursor: pointer;
     border: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensure full height */
 }
 
 .product-card:hover {
@@ -365,6 +369,9 @@
 
 .product-details {
     padding: 18px;
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Take remaining space */
 }
 
 .product-rating {
@@ -413,6 +420,13 @@ h3.product-title {
     line-height: 1.3;
     margin: 0;
     flex: 1;
+    cursor: help; /* Show cursor when hoverable */
+    min-height: 2.6rem; /* Ensure consistent height for 2 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .product-card .product-price {
@@ -441,10 +455,12 @@ h3.product-title {
     line-height: 1.4;
     margin-bottom: 12px;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    cursor: help; /* Show cursor when hoverable */
+    min-height: 3.6rem; /* Ensure consistent height for 3 lines */
 }
 
 .combo-items {
@@ -452,6 +468,9 @@ h3.product-title {
     padding: 12px;
     border-radius: 8px;
     margin-bottom: 12px;
+    flex-shrink: 0; /* Prevent shrinking */
+    max-height: 140px; /* Limit maximum height */
+    overflow-y: auto; /* Add scroll if needed */
 }
 
 .combo-items h4 {
@@ -487,8 +506,49 @@ h3.product-title {
     color: #999;
 }
 
+.show-more-btn, .show-less-btn {
+    background: none;
+    border: none;
+    color: #2d5a3d;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    font-style: normal;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.show-more-btn:hover, .show-less-btn:hover {
+    color: #1e3d2a;
+}
+
+/* Tooltip Styles */
+.product-tooltip {
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    max-width: 250px;
+    word-wrap: break-word;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+}
+
+.product-tooltip::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.9);
+}
+
 .product-actions {
-    margin-top: 15px;
+    margin-top: auto; /* Push to bottom */
+    padding-top: 15px; /* Add some spacing */
 }
 
 .add-to-cart-btn {
