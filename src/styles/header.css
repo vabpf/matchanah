@@ -106,16 +106,6 @@
     font-weight: 600;
 }
 
-.cart-link {
-    background: #2d5a3d;
-    color: #fff !important;
-    border-radius: 12px;
-}
-
-.cart-link:hover {
-    background: #1e3d2a;
-}
-
 /* Mobile Menu Toggle Button */
 .mobile-menu-toggle {
     display: none;
@@ -174,6 +164,303 @@
 .hamburger.active span:nth-child(3) {
     transform: rotate(-45deg);
     bottom: 50%;
+}
+
+/* Header Actions (User Menu + Cart) */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Auth Buttons */
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.auth-buttons .login-button {
+    color: #2d5a3d;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin-right: 0.75rem;
+}
+
+.auth-buttons .login-button:hover {
+    background: rgba(45, 90, 61, 0.1);
+}
+
+.auth-buttons .register-button {
+    background: #2d5a3d;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.auth-buttons .register-button:hover {
+    background: #1e3d2a;
+}
+
+/* User Menu */
+.user-menu-container {
+    position: relative;
+}
+
+.user-menu-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 0.75rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    color: #2d5a3d;
+}
+
+.user-menu-trigger:hover {
+    background: rgba(45, 90, 61, 0.1);
+}
+
+.user-avatar,
+.user-avatar-large {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #2d5a3d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.user-avatar-large {
+    width: 48px;
+    height: 48px;
+    font-size: 1.1rem;
+}
+
+.user-name {
+    font-weight: 500;
+    color: #2d5a3d;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-arrow {
+    transition: transform 0.2s ease;
+    color: #718096;
+}
+
+.dropdown-arrow.open {
+    transform: rotate(180deg);
+}
+
+/* User Dropdown */
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 280px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e2e8f0;
+    z-index: 1000;
+    animation: dropdownSlide 0.2s ease-out;
+    margin-top: 0.5rem;
+}
+
+@keyframes dropdownSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.user-info {
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-details {
+    flex: 1;
+    overflow: hidden;
+}
+
+.user-name-full {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-email {
+    color: #718096;
+    font-size: 0.875rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 0;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.25rem;
+    color: #4a5568;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+    border: none;
+    background: none;
+    width: 100%;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.dropdown-item:hover {
+    background: #f7fafc;
+    color: #2d3748;
+}
+
+.dropdown-item svg {
+    color: #718096;
+    flex-shrink: 0;
+}
+
+.logout-item {
+    color: #e53e3e;
+}
+
+.logout-item:hover {
+    background: #fed7d7;
+    color: #c53030;
+}
+
+.logout-item svg {
+    color: #e53e3e;
+}
+
+/* Desktop Cart Button */
+.desktop-cart-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: #2d5a3d;
+    color: white;
+    border-radius: 12px;
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.desktop-cart-button:hover {
+    background: #1e3d2a;
+}
+
+/* Mobile User Section */
+.mobile-user-section {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(45, 90, 61, 0.1);
+    margin-bottom: 1rem;
+}
+
+.mobile-user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0 0.5rem;
+}
+
+.mobile-user-info .user-avatar {
+    width: 48px;
+    height: 48px;
+    font-size: 1.1rem;
+}
+
+.mobile-user-info .user-details {
+    flex: 1;
+}
+
+.mobile-user-info .user-name {
+    font-weight: 600;
+    color: #2d5a3d;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    max-width: none;
+}
+
+.mobile-user-info .user-email {
+    color: #718096;
+    font-size: 0.875rem;
+}
+
+/* Mobile Navigation Updates */
+.nav-divider {
+    height: 1px;
+    background: rgba(45, 90, 61, 0.1);
+    margin: 1rem 0;
+}
+
+.logout-button {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    color: #e53e3e;
+    font-size: 1.1rem;
+}
+
+.logout-button:hover {
+    background: #fed7d7;
+    color: #c53030;
+}
+
+/* Utility classes */
+.desktop-only {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .desktop-only {
+        display: none;
+    }
+    
+    .header-actions {
+        display: none;
+    }
 }
 
 /* Mobile Cart Button */

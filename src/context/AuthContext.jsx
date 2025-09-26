@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import authService from '../services/authService';
 
 const AuthContext = createContext();
 
@@ -14,95 +15,187 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Check for saved user session on mount
+  // Listen to Firebase auth state changes
   useEffect(() => {
-    const savedUser = localStorage.getItem('matchanah-user');
-    if (savedUser) {
-      try {
-        const userData = JSON.parse(savedUser);
-        setUser(userData);
-        setIsAuthenticated(true);
-      } catch (error) {
-        console.error('Error loading user from localStorage:', error);
-        localStorage.removeItem('matchanah-user');
+    const unsubscribe = authService.onAuthStateChanged(async (firebaseUser) => {
+      setIsLoading(true);
+      setError(null);
+      
+      if (firebaseUser) {
+        try {
+          // Get additional user data from Firestore
+          const userDataResult = await authService.getUserData(firebaseUser.uid);
+          
+          const userData = {
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            displayName: firebaseUser.displayName,
+            emailVerified: firebaseUser.emailVerified,
+            ...(userDataResult.success ? userDataResult.data : {})
+          };
+          
+          setUser(userData);
+          setIsAuthenticated(true);
+        } catch (error) {
+          console.error('Error loading user data:', error);
+          setError('Lỗi tải thông tin người dùng');
+          setUser(null);
+          setIsAuthenticated(false);
+        }
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
       }
-    }
-    setIsLoading(false);
+      
+      setIsLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const login = async (email, password) => {
     setIsLoading(true);
+    setError(null);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const result = await authService.login(email, password);
       
-      // For demo purposes, accept any email/password
-      const userData = {
-        id: Date.now(),
-        email,
-        name: email.split('@')[0],
-        avatar: null
-      };
-      
-      setUser(userData);
-      setIsAuthenticated(true);
-      localStorage.setItem('matchanah-user', JSON.stringify(userData));
-      
-      return { success: true, user: userData };
+      if (result.success) {
+        // User state will be updated via the auth state listener
+        return { success: true, user: result.user };
+      } else {
+        setError(result.error);
+        return { success: false, error: result.error };
+      }
     } catch (error) {
-      return { success: false, error: 'Đăng nhập thất bại' };
+      const errorMessage = 'Đăng nhập thất bại. Vui lòng thử lại.';
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
     } finally {
       setIsLoading(false);
     }
   };
 
-  const register = async (userData) => {
+  const register = async (email, password, userData = {}) => {
     setIsLoading(true);
+    setError(null);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const result = await authService.register(email, password, userData);
       
-      const newUser = {
-        id: Date.now(),
-        ...userData,
-        avatar: null
-      };
-      
-      setUser(newUser);
-      setIsAuthenticated(true);
-      localStorage.setItem('matchanah-user', JSON.stringify(newUser));
-      
-      return { success: true, user: newUser };
+      if (result.success) {
+        // User state will be updated via the auth state listener
+        return { success: true, user: result.user };
+      } else {
+        setError(result.error);
+        return { success: false, error: result.error };
+      }
     } catch (error) {
-      return { success: false, error: 'Đăng ký thất bại' };
+      const errorMessage = 'Đăng ký thất bại. Vui lòng thử lại.';
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
     } finally {
       setIsLoading(false);
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    setIsAuthenticated(false);
-    localStorage.removeItem('matchanah-user');
+  const logout = async () => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const result = await authService.logout();
+      
+      if (!result.success) {
+        setError(result.error);
+      }
+      
+      // User state will be updated via the auth state listener
+      return result;
+    } catch (error) {
+      const errorMessage = 'Đăng xuất thất bại. Vui lòng thử lại.';
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const updateProfile = (updatedData) => {
-    const updatedUser = { ...user, ...updatedData };
-    setUser(updatedUser);
-    localStorage.setItem('matchanah-user', JSON.stringify(updatedUser));
+  const updateProfile = async (updatedData) => {
+    setError(null);
+    
+    try {
+      const result = await authService.updateUserProfile(updatedData);
+      
+      if (result.success) {
+        // Update local user state
+        setUser(prevUser => ({ ...prevUser, ...updatedData }));
+        return { success: true };
+      } else {
+        setError(result.error);
+        return { success: false, error: result.error };
+      }
+    } catch (error) {
+      const errorMessage = 'Cập nhật thông tin thất bại. Vui lòng thử lại.';
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
+    }
+  };
+
+  const resetPassword = async (email) => {
+    setError(null);
+    
+    try {
+      const result = await authService.resetPassword(email);
+      
+      if (!result.success) {
+        setError(result.error);
+      }
+      
+      return result;
+    } catch (error) {
+      const errorMessage = 'Gửi email đặt lại mật khẩu thất bại. Vui lòng thử lại.';
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
+    }
+  };
+
+  const changePassword = async (currentPassword, newPassword) => {
+    setError(null);
+    
+    try {
+      const result = await authService.changePassword(currentPassword, newPassword);
+      
+      if (!result.success) {
+        setError(result.error);
+      }
+      
+      return result;
+    } catch (error) {
+      const errorMessage = 'Đổi mật khẩu thất bại. Vui lòng thử lại.';
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
+    }
+  };
+
+  const clearError = () => {
+    setError(null);
   };
 
   const value = {
     user,
     isLoading,
     isAuthenticated,
+    error,
     login,
     register,
     logout,
-    updateProfile
+    updateProfile,
+    resetPassword,
+    changePassword,
+    clearError
   };
 
   return (

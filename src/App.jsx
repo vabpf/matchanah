@@ -7,6 +7,7 @@ import Contact from './pages/Contact'
 import FAQ from './pages/FAQ'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import ForgotPassword from './pages/ForgotPassword'
 import CartPage from './pages/CartPage'
 import Checkout from './pages/Checkout'
 import QRPayment from './pages/QRPayment'
@@ -14,6 +15,7 @@ import OrderSuccess from './pages/OrderSuccess'
 import Account from './pages/Account'
 import ProductDetail from './pages/ProductDetail'
 import NotFound from './pages/NotFound'
+import ProtectedRoute from './components/ProtectedRoute'
 import { CartProvider } from './context/CartContext'
 import { AuthProvider } from './context/AuthContext'
 import './styles/index.css'
@@ -33,11 +35,40 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/cart" element={<CartPage />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/qr-payment" element={<QRPayment />} />
-              <Route path="/order-success" element={<OrderSuccess />} />
-              <Route path="/account" element={<Account />} />
+              <Route 
+                path="/checkout" 
+                element={
+                  <ProtectedRoute>
+                    <Checkout />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/qr-payment" 
+                element={
+                  <ProtectedRoute>
+                    <QRPayment />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/order-success" 
+                element={
+                  <ProtectedRoute>
+                    <OrderSuccess />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/account" 
+                element={
+                  <ProtectedRoute>
+                    <Account />
+                  </ProtectedRoute>
+                } 
+              />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
@@ -46,5 +77,4 @@ function App() {
     </AuthProvider>
   )
 }
-
 export default App

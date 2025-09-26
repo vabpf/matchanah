@@ -55,14 +55,6 @@ const Navigation = () => {
             Liên hệ
           </Link>
         </li>
-        <li className="nav-item">
-          <Link 
-            to="/cart" 
-            className={`nav-link cart-link ${isActive('/cart') ? 'active' : ''}`}
-          >
-            Giỏ hàng ({cartItemCount})
-          </Link>
-        </li>
       </ul>
     </nav>
   );

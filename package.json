@@ -1,8 +1,26 @@
 {
   "name": "matchanah",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
+  "description": "Matchanah e-commerce website for matcha products",
+  "keywords": [
+    "matcha"
+  ],
+  "homepage": "https://github.com/vabpf/matchanah#readme",
+  "bugs": {
+    "url": "https://github.com/vabpf/matchanah/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vabpf/matchanah.git"
+  },
+  "license": "ISC",
+  "author": "Binh Vuong Anh",
   "type": "module",
+  "main": "eslint.config.js",
+  "directories": {
+    "example": "example"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,6 +28,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "firebase": "^12.3.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.1"

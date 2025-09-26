@@ -1,0 +1,477 @@
+/* Authentication Pages Styles */
+
+/* Toast Notification Styles */
+.toast-container {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.login-main,
+.register-main,
+.forgot-password-main {
+  padding-top: 8rem;
+}
+
+.login-content .container,
+.register-content .container,
+.forgot-password-content .container {
+  display: flex;
+}
+
+.toast {
+  min-width: 300px;
+  max-width: 400px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border-left: 4px solid #38a169;
+  transition: all 0.3s ease;
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.toast.hide {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.toast.success {
+  border-left-color: #38a169;
+}
+
+.toast.error {
+  border-left-color: #e53e3e;
+}
+
+.toast.warning {
+  border-left-color: #d69e2e;
+}
+
+.toast.info {
+  border-left-color: #3182ce;
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.toast-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.toast-message {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #2d3748;
+  line-height: 1.4;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: #a0aec0;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.toast-close:hover {
+  color: #718096;
+  background: #f7fafc;
+}
+
+@media (max-width: 480px) {
+  .toast-container {
+    top: 1rem;
+    right: 1rem;
+    left: 1rem;
+  }
+  
+  .toast {
+    min-width: auto;
+    max-width: none;
+    width: 100%;
+  }
+}
+
+/* Common form styles */
+.login-page,
+.register-page,
+.forgot-password-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.login-main,
+.register-main,
+.forgot-password-main {
+  padding: 8rem 0;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-form-container,
+.register-form-container,
+.forgot-password-form-container {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form-header h1 {
+  font-size: 2rem;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form-header p {
+  color: #718096;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Form styles */
+.login-form,
+.register-form,
+.forgot-password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 0.9rem;
+}
+
+.required {
+  color: #e53e3e;
+}
+
+.form-group input {
+  padding: 0.875rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s;
+  background: white;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #38a169;
+  box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.1);
+}
+
+.form-group input.error {
+  border-color: #e53e3e;
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+}
+
+.form-group input::placeholder {
+  color: #a0aec0;
+}
+
+/* Password input wrapper */
+.password-input-wrapper {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  color: #718096;
+  font-size: 1.25rem;
+  transition: color 0.2s;
+}
+
+.password-toggle:hover {
+  color: #4a5568;
+}
+
+/* Checkbox styles */
+.checkbox-group {
+  margin: 1rem 0;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #4a5568;
+}
+
+.checkbox-label input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 4px;
+  position: relative;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  transition: all 0.2s;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark {
+  background: #38a169;
+  border-color: #38a169;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+  content: '✓';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.checkbox-label input[type="checkbox"].error + .checkmark {
+  border-color: #e53e3e;
+}
+
+.checkbox-label a {
+  color: #38a169;
+  text-decoration: none;
+}
+
+.checkbox-label a:hover {
+  text-decoration: underline;
+}
+
+/* Error messages */
+.error-message {
+  background: #fed7d7;
+  color: #c53030;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  border-left: 4px solid #e53e3e;
+  margin-bottom: 1.5rem;
+}
+
+.field-error {
+  color: #e53e3e;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+/* Success message for forgot password */
+.success-message {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.success-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.success-message h1 {
+  color: #38a169;
+  margin-bottom: 1rem;
+}
+
+.success-message p {
+  color: #718096;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.success-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.secondary-button {
+  background: #f7fafc;
+  color: #4a5568;
+  border: 2px solid #e2e8f0;
+  padding: 0.875rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.secondary-button:hover {
+  background: #edf2f7;
+  border-color: #cbd5e0;
+}
+
+/* Form actions */
+.form-actions {
+  margin-top: 1rem;
+}
+
+.login-button,
+.register-button,
+.forgot-password-button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 12px;
+}
+
+.login-button:disabled,
+.register-button:disabled,
+.forgot-password-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Form links */
+.form-links {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.forgot-password-link {
+  color: #38a169;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+}
+
+/* Form footer */
+.form-footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.form-footer p {
+  color: #718096;
+  margin: 0;
+}
+
+.form-footer a {
+  color: #38a169;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .login-form-container,
+  .register-form-container,
+  .forgot-password-form-container {
+    padding: 2rem;
+    margin: 1rem;
+    border-radius: 12px;
+  }
+
+  .form-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .success-actions {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-form-container,
+  .register-form-container,
+  .forgot-password-form-container {
+    padding: 1.5rem;
+    margin: 0.5rem;
+  }
+
+  .form-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .form-group input {
+    padding: 0.75rem;
+  }
+
+  .login-button,
+  .register-button,
+  .forgot-password-button {
+    padding: 0.875rem;
+    font-size: .95rem;
+  }
+}
