@@ -24,11 +24,11 @@ const Home = () => {
         {/* Featured Products Section */}
         <section className="featured-products" id="find-your-matcha">
           <div className="container">
-            <h2 className="section-title">TOP SẢN PHẨM BÁN CHẠY</h2>
+            <h2 className="section-title">TOP SẢN PHẨM ĐƯỢC YÊU THÍCH</h2>
             <div className="product-carousel">
               <div className="featured-product-card">
                 <div className="product-image">
-                  <img src="/api/placeholder/300/300" alt="Hộp Matcha Hỗn Hợp" />
+                  <img src="/src/assets/images/product-sample.jpg" alt="Hộp Matcha Hỗn Hợp" />
                   <span className="discount-badge">Tiết kiệm 33%</span>
                 </div>
                 <div className="product-details">
@@ -47,7 +47,7 @@ const Home = () => {
 
               <div className="featured-product-card">
                 <div className="product-image">
-                  <img src="/api/placeholder/300/300" alt="Hộp Matcha Kem" />
+                  <img src="/src/assets/images/product-sample.jpg" alt="Hộp Matcha Kem" />
                   <span className="discount-badge">Tiết kiệm 33%</span>
                 </div>
                 <div className="product-details">
@@ -55,7 +55,7 @@ const Home = () => {
                     ⭐⭐⭐⭐⭐
                   </div>
                   <div className="product-info">
-                    <h3 className="product-title">Combo 3 loại Matcha 200g</h3>
+                    <h3 className="product-title">Combo 3 loại Matcha 50g</h3>
                     <div className="product-price">
                       <span className="current-price">199.000₫</span>
                       <span className="original-price">300.000₫</span>
@@ -66,7 +66,7 @@ const Home = () => {
 
               <div className="featured-product-card">
                 <div className="product-image">
-                  <img src="/api/placeholder/300/300" alt="Hộp Matcha Trái Cây" />
+                  <img src="/src/assets/images/product-sample.jpg" alt="Hộp Matcha Trái Cây" />
                   <span className="discount-badge">Tiết kiệm 33%</span>
                 </div>
                 <div className="product-details">

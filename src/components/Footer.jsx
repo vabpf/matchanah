@@ -37,8 +37,8 @@ const Footer = () => {
           <div className="footer-block">
             <h2 className="footer-block__heading">Liên hệ</h2>
             <div className="footer-block__details-content">
-              <p>Email: info@matchanah.com</p>
-              <p>Điện thoại: +123 456 7890</p>
+              <p>Email: info@matchanah.store</p>
+              <p>Điện thoại: +84 389822589 </p>
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 
 const AuthContext = createContext();
@@ -16,6 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   // Listen to Firebase auth state changes
   useEffect(() => {
@@ -36,8 +38,17 @@ export const AuthProvider = ({ children }) => {
             ...(userDataResult.success ? userDataResult.data : {})
           };
           
+          console.log('🔑 User data loaded:', userData);
+          console.log('👨‍💼 Is admin:', userData.isAdmin);
+          
           setUser(userData);
           setIsAuthenticated(true);
+          
+          // Auto-navigate admin users after login
+          if (userData.isAdmin && window.location.pathname === '/login') {
+            console.log('🚀 Navigating admin to dashboard...');
+            setTimeout(() => navigate('/admin'), 100);
+          }
         } catch (error) {
           console.error('Error loading user data:', error);
           setError('Lỗi tải thông tin người dùng');

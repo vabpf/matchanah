@@ -36,6 +36,26 @@
     padding: 8px 15px;
 }
 
+/* Admin nav link styling */
+.admin-nav-link {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    border-radius: 6px;
+    margin: 0.5rem 0;
+}
+
+.admin-nav-link:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%) !important;
+    color: white !important;
+    position: relative;
+}
+
+.floating-header.scrolled .header-container {
+    background: rgba(246, 236, 220, 0.9);
+    border-radius: 15px;
+    padding: 8px 15px;
+}
+
 .logo-section {
     display: flex;
     align-items: center;
@@ -350,6 +370,22 @@
 .dropdown-item:hover {
     background: #f7fafc;
     color: #2d3748;
+}
+
+.dropdown-item.admin-item {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+}
+
+.dropdown-item.admin-item:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    color: white;
+}
+
+.dropdown-item.admin-item svg {
+    color: white;
 }
 
 .dropdown-item svg {

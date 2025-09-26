@@ -175,6 +175,8 @@ class OrderService {
   // Get all orders (admin only)
   async getAllOrders(filters = {}) {
     try {
+      console.log('🔥 orderService.getAllOrders called with filters:', filters);
+      
       let q = collection(db, this.ordersCollection);
 
       if (filters.status) {
@@ -191,10 +193,15 @@ class OrderService {
         q = query(q, limit(filters.limit));
       }
 
+      console.log('📊 Executing Firestore query...');
       const querySnapshot = await getDocs(q);
+      console.log('✅ Query successful, processing documents...');
+      
       const orders = [];
 
       for (const orderDoc of querySnapshot.docs) {
+        console.log('📄 Processing order:', orderDoc.id);
+        
         // Get items for each order
         const itemsQuery = query(
           collection(db, this.orderItemsCollection),
@@ -217,11 +224,14 @@ class OrderService {
         });
       }
 
+      console.log('🎉 Successfully loaded', orders.length, 'orders');
+      
       return {
         success: true,
         data: orders
       };
     } catch (error) {
+      console.error('💥 getAllOrders error:', error);
       return {
         success: false,
         error: error.message

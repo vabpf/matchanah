@@ -3,10 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import { useOrders } from '../hooks/useOrders';
 
 const Checkout = () => {
   const navigate = useNavigate();
   const { clearCart } = useCart();
+  const { user } = useAuth();
+  const { createOrder } = useOrders();
   const [orderData, setOrderData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
@@ -44,27 +48,40 @@ const Checkout = () => {
     setProcessing(true);
     
     try {
-      // Simulate order processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const orderId = generateOrderId();
-      
-      // Lưu thông tin đơn hàng đã hoàn thành
-      const completedOrder = {
-        ...orderData,
-        orderId,
-        orderDate: new Date().toISOString(),
-        status: 'CONFIRMED'
+      // Prepare order data for Firebase
+      const orderToCreate = {
+        items: orderData.items,
+        total: orderData.total,
+        subtotal: orderData.total,
+        shippingCost: 0,
+        tax: 0,
+        shippingInfo: orderData.shippingInfo,
+        paymentMethod: orderData.paymentMethod,
+        couponCode: orderData.couponCode || '',
+        status: 'pending',
+        notes: '',
+        // Generate order number here
+        orderNumber: 'ORD-' + Date.now().toString().slice(-6) + Math.floor(Math.random() * 1000).toString().padStart(3, '0')
       };
+
+      // Create order in Firebase
+      const result = await createOrder(orderToCreate);
       
-      localStorage.setItem('lastOrder', JSON.stringify(completedOrder));
-      
-      // Xóa giỏ hàng và dữ liệu tạm thời
-      clearCart();
-      localStorage.removeItem('orderData');
-      
-      // Chuyển đến trang cảm ơn
-      navigate('/order-success', { state: { orderId } });
+      if (result.success) {
+        // Clear cart and temp data
+        clearCart();
+        localStorage.removeItem('orderData');
+        
+        // Navigate to success page with order ID
+        navigate('/order-success', { 
+          state: { 
+            orderId: result.data.orderId,
+            orderNumber: orderToCreate.orderNumber
+          } 
+        });
+      } else {
+        throw new Error(result.error || 'Lỗi khi tạo đơn hàng');
+      }
       
     } catch (error) {
       console.error('Lỗi xử lý đơn hàng:', error);

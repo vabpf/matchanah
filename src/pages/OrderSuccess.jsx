@@ -7,6 +7,7 @@ const OrderSuccess = () => {
   const location = useLocation();
   const [orderInfo, setOrderInfo] = useState(null);
   const orderId = location.state?.orderId;
+  const orderNumber = location.state?.orderNumber;
 
   useEffect(() => {
     // Lấy thông tin đơn hàng từ localStorage
@@ -57,9 +58,9 @@ const OrderSuccess = () => {
                 Cảm ơn bạn đã đặt hàng tại Matchanah. Chúng tôi sẽ xử lý đơn hàng của bạn trong thời gian sớm nhất.
               </p>
               
-              {orderId && (
+              {(orderId || orderNumber) && (
                 <div className="order-id">
-                  <strong>Mã đơn hàng: #{orderId}</strong>
+                  <strong>Mã đơn hàng: #{orderNumber || orderId}</strong>
                 </div>
               )}
               
@@ -102,6 +103,9 @@ const OrderSuccess = () => {
               </div>
               
               <div className="action-buttons">
+                <Link to="/orders" className="view-orders-btn">
+                  Xem lịch sử đơn hàng
+                </Link>
                 <Link to="/products" className="continue-shopping-btn">
                   Tiếp tục mua sắm
                 </Link>

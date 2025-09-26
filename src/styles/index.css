@@ -1,18 +1,23 @@
-/* Aggregated component style imports */
+/* Import all component styles */
 @import './base.css';
 @import './header.css';
 @import './hero.css';
 @import './marquee.css';
 @import './featured-products.css';
-@import './faq.css';
-@import './products.css';
-@import './product-detail.css';
 @import './benefits.css';
 @import './how-it-works.css';
 @import './reviews.css';
 @import './final-cta.css';
+@import './footer.css';
+@import './products.css';
+@import './product-detail.css';
+@import './about.css';
+@import './contact.css';
+@import './faq.css';
+@import './auth.css';
 @import './cart.css';
 @import './order-progress.css';
-@import './contact.css';
-@import './auth.css';
+@import './order-history.css';
+@import './order-detail.css';
+@import './admin.css';
 @import './responsive.css';

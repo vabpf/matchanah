@@ -39,16 +39,7 @@ const FAQ = () => {
   return (
     <div className="faq-page">
       <Header />
-      <main className="faq-main">
-        <section className="page-header">
-          <div className="container">
-            <h1 className="page-title">Câu hỏi thường gặp</h1>
-            <p className="page-subtitle">
-              Tìm hiểu thêm về matcha và sản phẩm của Matchanah
-            </p>
-          </div>
-        </section>
-        
+      <main className="faq-main">      
         <section className="faq-section">
           <div className="container">
             <h2>Các câu hỏi thường gặp</h2>

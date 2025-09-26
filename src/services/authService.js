@@ -36,7 +36,16 @@ class AuthService {
         phone: userData.phone || '',
         createdAt: new Date(),
         updatedAt: new Date(),
-        isActive: true
+        isActive: true,
+        isAdmin: false,
+        shippingInfo: {
+          receiverName: userData.displayName || '',
+          phone: userData.phone || '',
+          address: '',
+          province: '',
+          district: '',
+          ward: ''
+        }
       });
 
       return {

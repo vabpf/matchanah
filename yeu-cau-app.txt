@@ -1,0 +1,20 @@
+hãy kiểm tra xem hiện tại app đã có hệ thống đặt hàng chưa. nếu có đã hoàn thiện đến bước nào và cần tiếp tục hoàn thiện như thế nào.
+
+hệ thống đặt hàng cần có:
+- users:
+	- có thể đặt hàng
+	- khi vào giỏ hàng, các thông tin sẽ được auto-fill nếu có trường nào trùng với thông tin đăng ký (tên/sdt). user có thể lưu thông tin để auto-fill cho lần đặt hàng tiếp theo.
+	- có thể thanh toán (tính năng thanh toán giữ như hiện tại, sẽ phát triển sau)
+	- có thể xem lịch sử đơn hàng
+	- có thể theo dõi tiến độ đơn hàng
+- admin:
+	- có thể xem số đơn hàng hiện tại và trong quá khứ
+	- có thể điều chỉnh trạng thái các đơn hàng
+	- một số thống kê cơ bản như tổng đơn hàng, tổng doanh thu qua app
+
+lưu ý khi thực thi:
+- lưu cache cho app vào phía client để giảm load từ firebase mỗi lần tải trang
+- app sẽ không có phần back-end mà chỉ có react + javascript + ... (không cần cloud function)
+- dữ liệu về đơn hàng sẽ được query từ firestore
+- quyền seller sẽ được định nghĩa bằng tài khoản sign-in, thông tin user trên firestore nếu có isAdmin = true thì sẽ là admin (tôi sẽ thêm thủ công trên firestore)
+- nếu user là admin, sẽ tự navigate đến đường dẫn /admin sau khi đăng nhập. user không có quyền truy cập vào đường dẫn này.

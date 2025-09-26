@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import { useShipping } from '../hooks/useShipping';
 
 const CartPage = () => {
   const { cartItems, updateQuantity, removeFromCart, getCartTotal, clearCart } = useCart();
+  const { isAuthenticated, user } = useAuth();
+  const { 
+    shippingInfo, 
+    updateShippingInfo, 
+    saveShippingInfo, 
+    validateShippingInfo 
+  } = useShipping();
   const navigate = useNavigate();
-  
-  // State cho thông tin giao hàng
-  const [shippingInfo, setShippingInfo] = useState({
-    receiverName: '',
-    phone: '',
-    address: '',
-    province: '',
-    district: '',
-    ward: ''
-  });
   
   // State cho phương thức thanh toán
   const [paymentMethod, setPaymentMethod] = useState('');
   const [couponCode, setCouponCode] = useState('');
+  const [saveShippingForLater, setSaveShippingForLater] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('vi-VN', {
@@ -30,38 +31,64 @@ const CartPage = () => {
   };
 
   const handleInputChange = (field, value) => {
-    setShippingInfo(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    updateShippingInfo({ [field]: value });
   };
 
   const validateForm = () => {
-    const { receiverName, phone, address, province, district, ward } = shippingInfo;
-    return receiverName && phone && address && province && district && ward && paymentMethod;
+    const shippingValidation = validateShippingInfo();
+    return shippingValidation.isValid && paymentMethod;
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (!validateForm()) {
-      alert('Vui lòng nhập đầy đủ thông tin giao hàng và chọn phương thức thanh toán');
-      return;
+      const shippingValidation = validateShippingInfo();
+      if (!shippingValidation.isValid) {
+        alert(shippingValidation.message);
+        return;
+      }
+      if (!paymentMethod) {
+        alert('Vui lòng chọn phương thức thanh toán');
+        return;
+      }
     }
 
-    // Lưu thông tin đơn hàng vào localStorage để sử dụng ở trang checkout
-    const orderData = {
-      items: cartItems,
-      total: getCartTotal(),
-      shippingInfo,
-      paymentMethod,
-      couponCode
-    };
-    
-    localStorage.setItem('orderData', JSON.stringify(orderData));
-    
-    if (paymentMethod === 'VietQR') {
-      navigate('/qr-payment');
-    } else {
-      navigate('/checkout');
+    setIsProcessing(true);
+
+    try {
+      // Save shipping info if user is authenticated and checkbox is checked
+      if (isAuthenticated && saveShippingForLater) {
+        await saveShippingInfo();
+      }
+
+      // Prepare order data with cart items converted to order format
+      const orderItems = cartItems.map(item => ({
+        productId: item.id,
+        productName: item.name,
+        productImage: item.image,
+        quantity: item.quantity,
+        price: item.price
+      }));
+
+      const orderData = {
+        items: orderItems,
+        total: getCartTotal(),
+        shippingInfo,
+        paymentMethod,
+        couponCode
+      };
+      
+      localStorage.setItem('orderData', JSON.stringify(orderData));
+      
+      if (paymentMethod === 'VietQR') {
+        navigate('/qr-payment');
+      } else {
+        navigate('/checkout');
+      }
+    } catch (error) {
+      console.error('Error during checkout:', error);
+      alert('Có lỗi xảy ra. Vui lòng thử lại.');
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -159,6 +186,21 @@ const CartPage = () => {
                     />
                   </div>
                 </div>
+                
+                {isAuthenticated && (
+                  <div className="form-row">
+                    <div className="form-group save-shipping">
+                      <label className="checkbox-label">
+                        <input
+                          type="checkbox"
+                          checked={saveShippingForLater}
+                          onChange={(e) => setSaveShippingForLater(e.target.checked)}
+                        />
+                        <span>Lưu thông tin này cho lần mua hàng tiếp theo</span>
+                      </label>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -246,10 +288,15 @@ const CartPage = () => {
 
                   <button
                     onClick={handleCheckout}
-                    disabled={!validateForm()}
+                    disabled={!validateForm() || isProcessing}
                     className="checkout-btn"
                   >
-                    {paymentMethod === 'VietQR' ? 'Thanh toán qua VietQR' : 'Xác nhận đặt hàng'}
+                    {isProcessing 
+                      ? 'Đang xử lý...' 
+                      : paymentMethod === 'VietQR' 
+                        ? 'Thanh toán qua VietQR' 
+                        : 'Xác nhận đặt hàng'
+                    }
                   </button>
                 </div>
 

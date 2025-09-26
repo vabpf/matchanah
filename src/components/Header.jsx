@@ -163,6 +163,19 @@ const Header = () => {
                     Đơn hàng
                   </Link>
                   
+                  {user?.isAdmin && (
+                    <Link 
+                      to="/admin" 
+                      className="dropdown-item admin-item"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7V10C2 16 6 20.5 12 22C18 20.5 22 16 22 10V7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      Quản trị Admin
+                    </Link>
+                  )}
+                  
                   <div className="dropdown-divider"></div>
                   
                   <button 
@@ -310,6 +323,17 @@ const Header = () => {
                     Đơn hàng
                   </Link>
                 </li>
+                {user?.isAdmin && (
+                  <li className="nav-item">
+                    <Link 
+                      to="/admin" 
+                      className={`nav-link admin-nav-link ${location.pathname.startsWith('/admin') ? 'active' : ''}`}
+                      onClick={toggleMobileMenu}
+                    >
+                      Quản trị Admin
+                    </Link>
+                  </li>
+                )}
                 <li className="nav-item">
                   <button 
                     className="nav-link logout-button"
