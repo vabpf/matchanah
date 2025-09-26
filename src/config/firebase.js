@@ -1,10 +1,15 @@
 // Firebase configuration and initialization
 import { initializeApp } from 'firebase/app';
-import { getAuth, connectAuthEmulator } from 'firebase/auth';
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
-import { getStorage, connectStorageEmulator } from 'firebase/storage';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 import { getAnalytics } from 'firebase/analytics';
 import config from '../config/config.js';
+
+// Validate Firebase config
+if (!config.firebase.apiKey || !config.firebase.projectId) {
+  throw new Error('Firebase configuration is missing. Please check your .env file.');
+}
 
 // Initialize Firebase
 const app = initializeApp(config.firebase);
@@ -21,32 +26,12 @@ export const storage = getStorage(app);
 // Initialize Analytics (optional - for production)
 let analytics = null;
 if (typeof window !== 'undefined' && config.firebase.measurementId) {
-  analytics = getAnalytics(app);
-}
-export { analytics };
-
-// Connect to emulators in development
-if (config.app.environment === 'development') {
-  // Only connect to emulators if not already connected
   try {
-    // Auth emulator
-    if (!auth._delegate?._config?.emulator) {
-      connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
-    }
-    
-    // Firestore emulator
-    if (!db._delegate?._databaseId?.projectId?.includes('localhost')) {
-      connectFirestoreEmulator(db, 'localhost', 8080);
-    }
-    
-    // Storage emulator
-    if (!storage._delegate?._host?.includes('localhost')) {
-      connectStorageEmulator(storage, 'localhost', 9199);
-    }
+    analytics = getAnalytics(app);
   } catch (error) {
-    // Emulators might already be connected or not running
-    console.warn('Firebase emulator connection warning:', error.message);
+    console.warn('Analytics initialization failed:', error.message);
   }
 }
+export { analytics };
 
 export default app;

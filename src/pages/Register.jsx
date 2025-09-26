@@ -286,10 +286,12 @@ const Register = () => {
                       className={formErrors.agreeToTerms ? 'error' : ''}
                     />
                     <span className="checkmark"></span>
-                    Tôi đồng ý với{' '}
-                    <Link to="/terms" target="_blank">điều khoản sử dụng</Link>{' '}
-                    và{' '}
-                    <Link to="/privacy" target="_blank">chính sách bảo mật</Link>
+                    <span className="checkbox-label-text">
+                      Tôi đồng ý với{' '}
+                      <Link to="/terms" target="_blank">điều khoản sử dụng</Link>{' '}
+                      và{' '}
+                      <Link to="/privacy" target="_blank">chính sách bảo mật</Link>
+                    </span>
                     <span className="required">*</span>
                   </label>
                   {formErrors.agreeToTerms && (
