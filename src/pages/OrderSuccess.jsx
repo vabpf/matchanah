@@ -10,17 +10,40 @@ const OrderSuccess = () => {
   const orderNumber = location.state?.orderNumber;
 
   useEffect(() => {
-    // Lấy thông tin đơn hàng từ localStorage
-    const lastOrder = localStorage.getItem('lastOrder');
-    if (lastOrder) {
-      try {
-        const order = JSON.parse(lastOrder);
-        setOrderInfo(order);
-      } catch (err) {
-        console.error('Error parsing order info:', err);
+    // Lấy thông tin đơn hàng từ location state hoặc localStorage
+    let orderData = null;
+    
+    // Ưu tiên lấy từ state nếu có
+    if (location.state?.paymentMethod) {
+      orderData = location.state;
+    } else {
+      // Nếu không có, lấy từ localStorage
+      const lastOrder = localStorage.getItem('lastCompletedOrder');
+      if (lastOrder) {
+        try {
+          orderData = JSON.parse(lastOrder);
+          // Xóa dữ liệu tạm thời sau khi đã lấy
+          localStorage.removeItem('lastCompletedOrder');
+        } catch (err) {
+          console.error('Error parsing completed order info:', err);
+        }
+      } else {
+        // Fallback to old format
+        const oldLastOrder = localStorage.getItem('lastOrder');
+        if (oldLastOrder) {
+          try {
+            orderData = JSON.parse(oldLastOrder);
+          } catch (err) {
+            console.error('Error parsing order info:', err);
+          }
+        }
       }
     }
-  }, []);
+    
+    if (orderData) {
+      setOrderInfo(orderData);
+    }
+  }, [location.state]);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('vi-VN', {
@@ -70,7 +93,7 @@ const OrderSuccess = () => {
                   <div className="summary-details">
                     <div className="detail-row">
                       <span>Ngày đặt:</span>
-                      <span>{formatDate(orderInfo.orderDate)}</span>
+                      <span>{formatDate(orderInfo.createdAt || orderInfo.orderDate || new Date().toISOString())}</span>
                     </div>
                     <div className="detail-row">
                       <span>Tổng tiền:</span>
@@ -79,7 +102,17 @@ const OrderSuccess = () => {
                     <div className="detail-row">
                       <span>Phương thức thanh toán:</span>
                       <span>
-                        {orderInfo.paymentMethod === 'COD' ? 'Thanh toán khi nhận hàng' : 'VietQR'}
+                        {orderInfo.paymentMethod === 'COD' ? 'Thanh toán khi nhận hàng' : 
+                         orderInfo.paymentMethod === 'VietQR' ? 'VietQR (Đã thanh toán)' : 
+                         'VietQR'}
+                      </span>
+                    </div>
+                    <div className="detail-row">
+                      <span>Trạng thái:</span>
+                      <span className={`status ${orderInfo.status?.toLowerCase()}`}>
+                        {orderInfo.status === 'paid' ? 'Đã thanh toán' : 
+                         orderInfo.status === 'pending' ? 'Chờ xử lý' : 
+                         orderInfo.status || 'Đang xử lý'}
                       </span>
                     </div>
                     <div className="detail-row">

@@ -48,7 +48,13 @@ const Checkout = () => {
     setProcessing(true);
     
     try {
-      // Prepare order data for Firebase
+      if (paymentMethod === 'VietQR') {
+        // Chuyển đến trang thanh toán VietQR
+        navigate('/qr-payment');
+        return;
+      }
+
+      // COD payment - create order directly
       const orderToCreate = {
         items: orderData.items,
         total: orderData.total,
@@ -60,19 +66,15 @@ const Checkout = () => {
         couponCode: orderData.couponCode || '',
         status: 'pending',
         notes: '',
-        // Generate order number here
         orderNumber: 'ORD-' + Date.now().toString().slice(-6) + Math.floor(Math.random() * 1000).toString().padStart(3, '0')
       };
 
-      // Create order in Firebase
       const result = await createOrder(orderToCreate);
       
       if (result.success) {
-        // Clear cart and temp data
         clearCart();
         localStorage.removeItem('orderData');
         
-        // Navigate to success page with order ID
         navigate('/order-success', { 
           state: { 
             orderId: result.data.orderId,
@@ -200,7 +202,8 @@ const Checkout = () => {
                     disabled={processing}
                     className="confirm-order-btn"
                   >
-                    {processing ? 'Đang xử lý...' : 'Xác nhận đặt hàng'}
+                    {processing ? 'Đang xử lý...' : 
+                     paymentMethod === 'VietQR' ? 'Thanh toán ngay' : 'Xác nhận đặt hàng'}
                   </button>
                   
                   <button

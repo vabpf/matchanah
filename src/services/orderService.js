@@ -31,42 +31,53 @@ class OrderService {
         const orderRef = doc(collection(db, this.ordersCollection));
         const orderId = orderRef.id;
 
+        // Generate order number if not provided
+        const orderNumber = orderData.orderNumber || this.generateOrderNumber();
+
         const order = {
           ...orderData,
           id: orderId,
-          status: 'pending',
+          orderNumber: orderNumber,
+          status: orderData.status || 'pending', // Use provided status or default to pending
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
-          orderNumber: this.generateOrderNumber()
+          // Add payment timestamp if order is already paid
+          ...(orderData.status === 'paid' && { paidAt: serverTimestamp() })
         };
 
+        console.log('Creating order in Firestore:', order);
         transaction.set(orderRef, order);
 
         // Create order items
         if (orderData.items && orderData.items.length > 0) {
           for (const item of orderData.items) {
             const itemRef = doc(collection(db, this.orderItemsCollection));
-            transaction.set(itemRef, {
+            const orderItem = {
               orderId: orderId,
-              productId: item.productId,
-              productName: item.productName,
-              productImage: item.productImage,
+              productId: item.productId || item.id,
+              productName: item.productName || item.name,
+              productImage: item.productImage || item.image,
               quantity: item.quantity,
               price: item.price,
               total: item.quantity * item.price,
               createdAt: serverTimestamp()
-            });
+            };
+            
+            console.log('Creating order item:', orderItem);
+            transaction.set(itemRef, orderItem);
           }
         }
 
         return orderId;
       });
 
+      console.log('Order created successfully with ID:', result);
       return {
         success: true,
         data: { orderId: result }
       };
     } catch (error) {
+      console.error('Error creating order:', error);
       return {
         success: false,
         error: error.message
@@ -110,6 +121,62 @@ class OrderService {
         }
       };
     } catch (error) {
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  // Get order by order code
+  async getOrderByCode(orderCode) {
+    try {
+      console.log('🔍 Searching for order with code:', orderCode);
+      
+      const q = query(
+        collection(db, this.ordersCollection),
+        where('orderCode', '==', orderCode.toString())
+      );
+      
+      const querySnapshot = await getDocs(q);
+      
+      if (querySnapshot.empty) {
+        console.log('❌ No order found with code:', orderCode);
+        return {
+          success: false,
+          error: 'Order not found'
+        };
+      }
+
+      // Get the first matching order
+      const orderDoc = querySnapshot.docs[0];
+      console.log('✅ Found order:', orderDoc.id);
+
+      // Get order items
+      const itemsQuery = query(
+        collection(db, this.orderItemsCollection),
+        where('orderId', '==', orderDoc.id)
+      );
+      const itemsSnapshot = await getDocs(itemsQuery);
+      const items = [];
+
+      itemsSnapshot.forEach((doc) => {
+        items.push({
+          id: doc.id,
+          ...doc.data()
+        });
+      });
+
+      return {
+        success: true,
+        data: {
+          id: orderDoc.id,
+          ...orderDoc.data(),
+          items: items
+        }
+      };
+    } catch (error) {
+      console.error('💥 Error getting order by code:', error);
       return {
         success: false,
         error: error.message
@@ -314,11 +381,14 @@ class OrderService {
     try {
       const orderRef = doc(db, this.ordersCollection, orderId);
       await updateDoc(orderRef, {
-        status: 'paid',
+        status: 'Thanh toán thành công',
+        paymentStatus: 'paid',
         paymentMethod: paymentData.method,
         paymentId: paymentData.paymentId,
+        orderCode: paymentData.orderCode,
         paidAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
+        updatedAt: serverTimestamp(),
+        paymentDetails: paymentData.paymentDetails || null
       });
 
       return {
@@ -326,6 +396,46 @@ class OrderService {
         message: 'Payment processed successfully'
       };
     } catch (error) {
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  // Mark order as paid with PayOS data
+  async markOrderAsPaid(orderId, payosData) {
+    try {
+      const orderRef = doc(db, this.ordersCollection, orderId);
+      
+      const updateData = {
+        status: 'Thanh toán thành công',
+        paymentStatus: 'paid',
+        paymentMethod: 'PayOS',
+        paymentId: payosData.transactionId,
+        orderCode: payosData.orderCode?.toString(),
+        paidAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        paymentDetails: {
+          payosOrderCode: payosData.orderCode,
+          payosTransactionId: payosData.transactionId,
+          amount: payosData.amount,
+          paymentMethod: 'PayOS',
+          paidAt: new Date().toISOString(),
+          ...payosData.additionalDetails
+        }
+      };
+
+      console.log('💾 Updating order with payment data:', updateData);
+      
+      await updateDoc(orderRef, updateData);
+
+      return {
+        success: true,
+        message: 'Đơn hàng đã được đánh dấu là thanh toán thành công'
+      };
+    } catch (error) {
+      console.error('💥 Error marking order as paid:', error);
       return {
         success: false,
         error: error.message

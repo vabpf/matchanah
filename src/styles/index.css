@@ -16,6 +16,7 @@
 @import './faq.css';
 @import './auth.css';
 @import './cart.css';
+@import './payment.css';
 @import './order-progress.css';
 @import './order-history.css';
 @import './order-detail.css';

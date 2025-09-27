@@ -534,6 +534,7 @@
 .qr-payment-page .qr-payment-main {
   padding: 120px 0 60px;
   min-height: 100vh;
+  background: #fff;
 }
 
 .qr-payment-card {

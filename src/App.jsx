@@ -11,6 +11,7 @@ import ForgotPassword from './pages/ForgotPassword'
 import CartPage from './pages/CartPage'
 import Checkout from './pages/Checkout'
 import QRPayment from './pages/QRPayment'
+import PaymentReturn from './pages/PaymentReturn'
 import OrderSuccess from './pages/OrderSuccess'
 import Account from './pages/Account'
 import ProductDetail from './pages/ProductDetail'
@@ -55,6 +56,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <QRPayment />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/payment-return" 
+                element={
+                  <ProtectedRoute>
+                    <PaymentReturn />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/payment-cancel" 
+                element={
+                  <ProtectedRoute>
+                    <PaymentReturn />
                   </ProtectedRoute>
                 } 
               />
