@@ -132,7 +132,9 @@ class PayOSService {
         orderCode: paymentData.orderCode,
         amount: paymentData.amount,
         description: paymentData.description,
-        itemCount: paymentData.items.length
+        itemCount: paymentData.items.length,
+        returnUrl: paymentData.returnUrl,
+        cancelUrl: paymentData.cancelUrl
       });
 
       // Call PayOS API to create payment link
@@ -169,7 +171,10 @@ class PayOSService {
           accountNumber: response.data.accountNumber,
           bin: response.data.bin,
           currency: response.data.currency,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          // Store order information for return processing (not sent to PayOS)
+          orderId: orderData.orderId,
+          orderNumber: orderData.orderNumber
         };
         
         localStorage.setItem('pendingPayment', JSON.stringify(storedData));
@@ -250,10 +255,17 @@ class PayOSService {
         status: response.status,
         ok: response.ok,
         dataKeys: responseData.data ? Object.keys(responseData.data) : 'no data',
+        fullData: responseData.data,
         qrCodePresent: !!responseData.data?.qrCode,
         qrCodeType: typeof responseData.data?.qrCode,
         qrCodeLength: responseData.data?.qrCode?.length,
-        qrCodeSample: responseData.data?.qrCode?.substring(0, 50)
+        qrCodeSample: responseData.data?.qrCode?.substring(0, 50),
+        checkoutUrlPresent: !!responseData.data?.checkoutUrl,
+        accountInfo: {
+          accountNumber: responseData.data?.accountNumber,
+          accountName: responseData.data?.accountName,
+          bin: responseData.data?.bin
+        }
       });
 
       if (response.ok) {
@@ -399,9 +411,11 @@ class PayOSService {
             orderCode: data.orderCode,
             status: data.status,
             amount: data.amount,
-            paidAt: data.paidAt,
+            amountPaid: data.amountPaid || 0,
+            paidAt: data.transactions && data.transactions.length > 0 ? data.transactions[0].transactionDateTime : null,
             paymentMethod: 'PayOS',
-            transactionId: data.id
+            transactionId: data.id,
+            transactions: data.transactions || []
           }
         };
       } else {
@@ -416,6 +430,72 @@ class PayOSService {
         error: error.message
       };
     }
+  }
+
+  // Poll payment status until completed or timeout
+  async pollPaymentStatus(orderCode, options = {}) {
+    const {
+      maxAttempts = 30, // Maximum polling attempts
+      interval = 5000,  // Polling interval in milliseconds (5 seconds)
+      onStatusChange = null // Callback for status changes
+    } = options;
+
+    console.log(`🔄 Starting payment status polling for order ${orderCode}`);
+    
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        console.log(`📡 Polling attempt ${attempt}/${maxAttempts} for order ${orderCode}`);
+        
+        const result = await this.verifyPaymentStatus(orderCode);
+        
+        if (result.success) {
+          const { status, amountPaid, amount } = result.data;
+          
+          console.log(`📊 Payment status: ${status}, Amount paid: ${amountPaid}/${amount}`);
+          
+          // Call status change callback if provided
+          if (onStatusChange) {
+            onStatusChange(result.data);
+          }
+          
+          // Check if payment is completed
+          if (status === 'PAID' || status === 'paid') {
+            console.log('✅ Payment confirmed as PAID');
+            return {
+              success: true,
+              status: 'completed',
+              data: result.data
+            };
+          } else if (status === 'CANCELLED' || status === 'cancelled') {
+            console.log('❌ Payment cancelled');
+            return {
+              success: true,
+              status: 'cancelled',
+              data: result.data
+            };
+          } else {
+            console.log(`⏳ Payment status: ${status}, continuing to poll...`);
+          }
+        } else {
+          console.error(`❌ Error checking payment status: ${result.error}`);
+        }
+        
+        // Wait before next attempt (except for last attempt)
+        if (attempt < maxAttempts) {
+          await new Promise(resolve => setTimeout(resolve, interval));
+        }
+        
+      } catch (error) {
+        console.error(`💥 Polling error on attempt ${attempt}:`, error);
+      }
+    }
+    
+    console.log('⏰ Payment status polling timeout');
+    return {
+      success: false,
+      status: 'timeout',
+      error: 'Payment status polling timeout'
+    };
   }
 
   // Generate unique order code
@@ -438,6 +518,8 @@ class PayOSService {
       localStorage.removeItem('pendingPayment');
       localStorage.removeItem('paymentSuccess');
       localStorage.removeItem('paymentCancelled');
+      localStorage.removeItem('checkoutData');
+      localStorage.removeItem('pendingOrder');
     } catch (error) {
       console.error('Error cleaning up payment data:', error);
     }

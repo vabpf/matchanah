@@ -25,25 +25,33 @@ service cloud.firestore {
     
     // Orders are readable/writable by the user who created them or admins
     match /orders/{orderId} {
-      allow read, write: if request.auth != null && (
+      // Allow users to create their own orders
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      
+      // Allow users to read/update their own orders
+      allow read, update: if request.auth != null && (
         resource.data.userId == request.auth.uid || 
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true
       );
-      // Allow admins to read all orders
-      allow read: if request.auth != null && 
+      
+      // Allow admins to do everything
+      allow read, write: if request.auth != null && 
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
-      // Allow users to create their own orders
-      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
     }
     
     // Order items follow the same rules as orders
     match /orderItems/{itemId} {
-      allow read, write: if request.auth != null && (
+      // Allow authenticated users to create order items (we'll validate ownership in the service)
+      allow create: if request.auth != null;
+      
+      // Allow users to read/update order items for their own orders
+      allow read, update: if request.auth != null && (
         get(/databases/$(database)/documents/orders/$(resource.data.orderId)).data.userId == request.auth.uid ||
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true
       );
-      // Allow admins to read all order items
-      allow read: if request.auth != null && 
+      
+      // Allow admins to do everything
+      allow read, write: if request.auth != null && 
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
     }
     

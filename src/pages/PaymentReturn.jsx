@@ -131,6 +131,7 @@ const PaymentReturn = () => {
           const orderResult = await orderService.getOrder(orderId);
           if (orderResult.success) {
             setOrderData(orderResult.data);
+            console.log('✅ Order data set successfully:', orderResult.data);
           }
         } else {
           console.log('🔍 No order ID found in checkout data, trying to find by order code...');
@@ -157,14 +158,22 @@ const PaymentReturn = () => {
             const orderUpdate = await orderService.markOrderAsPaid(foundOrderId, payosData);
 
             if (orderUpdate.success) {
-              setOrderData({
-                ...orderByCodeResult.data,
-                status: 'Thanh toán thành công',
-                paymentMethod: 'PayOS',
-                paymentId: verifiedPayment.transactionId || returnData.id,
-                orderCode: orderCode.toString(),
-                paidAt: new Date().toISOString()
-              });
+              // Get the updated order data
+              const updatedOrderResult = await orderService.getOrder(foundOrderId);
+              if (updatedOrderResult.success) {
+                setOrderData(updatedOrderResult.data);
+                console.log('✅ Updated order data set:', updatedOrderResult.data);
+              } else {
+                setOrderData({
+                  id: foundOrderId,
+                  ...orderByCodeResult.data,
+                  status: 'Thanh toán thành công',
+                  paymentMethod: 'PayOS',
+                  paymentId: verifiedPayment.transactionId || returnData.id,
+                  orderCode: orderCode.toString(),
+                  paidAt: new Date().toISOString()
+                });
+              }
             } else {
               console.error('❌ Failed to update found order:', orderUpdate.error);
               throw new Error('Không thể cập nhật trạng thái đơn hàng');
@@ -192,6 +201,8 @@ const PaymentReturn = () => {
         // Clean up stored data
         payOSService.cleanupPaymentData();
         localStorage.removeItem('checkoutData');
+        localStorage.removeItem('orderData');
+        localStorage.removeItem('pendingOrder');
 
         console.log('🎉 Payment processing completed successfully');
 
@@ -211,9 +222,12 @@ const PaymentReturn = () => {
   // Handle redirect actions
   const handleViewOrder = () => {
     if (orderData?.id) {
-      navigate(`/order/${orderData.id}`);
+      navigate(`/orders/${orderData.id}`);
+    } else if (orderData?.orderCode) {
+      // Try to find order by orderCode first
+      navigate('/orders');
     } else {
-      navigate('/order-history');
+      navigate('/orders');
     }
   };
 

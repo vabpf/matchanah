@@ -4,6 +4,8 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Loading from '../components/Loading';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import { useOrders } from '../hooks/useOrders';
 import payOSService from '../services/payosService';
 
 import '../styles/payos-payment.css';
@@ -11,11 +13,17 @@ import '../styles/payos-payment.css';
 const QRPayment = () => {
   const navigate = useNavigate();
   const { clearCart } = useCart();
+  const { user } = useAuth();
+  const { createOrder } = useOrders();
   const [orderData, setOrderData] = useState(null);
   const [paymentData, setPaymentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [configStatus, setConfigStatus] = useState(null);
+  const [createdOrderId, setCreatedOrderId] = useState(null);
+  const [isPolling, setIsPolling] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState('pending');
+  const [pollCount, setPollCount] = useState(0);
 
   useEffect(() => {
     // Prevent double initialization in React StrictMode
@@ -30,6 +38,13 @@ const QRPayment = () => {
       try {
         isInitialized = true;
         console.log('🚀 Initializing PayOS payment...');
+        
+        // Check if user is logged in
+        if (!user) {
+          console.log('❌ User not authenticated, redirecting to login');
+          navigate('/login');
+          return;
+        }
         
         // Check PayOS configuration
         const status = payOSService.getConfigStatus();
@@ -52,6 +67,44 @@ const QRPayment = () => {
         const parsed = JSON.parse(stored);
         console.log('📦 Order data loaded:', parsed);
         setOrderData(parsed);
+
+        // Create order in Firestore first
+        console.log('💾 Creating order in Firestore...');
+        const orderToCreate = {
+          items: parsed.items,
+          total: parsed.total,
+          subtotal: parsed.total,
+          shippingCost: 0,
+          tax: 0,
+          shippingInfo: parsed.shippingInfo,
+          paymentMethod: 'PayOS',
+          couponCode: parsed.couponCode || '',
+          status: 'pending',
+          notes: 'Chờ thanh toán PayOS',
+          orderNumber: 'ORD-' + Date.now().toString().slice(-6) + Math.floor(Math.random() * 1000).toString().padStart(3, '0'),
+          userId: user?.uid,
+          userEmail: user?.email
+        };
+
+        const orderResult = await createOrder(orderToCreate);
+        
+        if (!orderResult.success) {
+          setError('Không thể tạo đơn hàng: ' + orderResult.error);
+          setLoading(false);
+          return;
+        }
+
+        console.log('✅ Order created in Firestore:', orderResult.data.orderId);
+        setCreatedOrderId(orderResult.data.orderId);
+
+        // Store checkout data with order ID for return processing
+        const checkoutData = {
+          ...parsed,
+          orderId: orderResult.data.orderId,
+          orderNumber: orderToCreate.orderNumber,
+          timestamp: new Date().toISOString()
+        };
+        localStorage.setItem('checkoutData', JSON.stringify(checkoutData));
 
         // Check if payment already exists to prevent double creation
         const existingPayment = localStorage.getItem('pendingPayment');
@@ -84,9 +137,13 @@ const QRPayment = () => {
           }
         }
 
-        // Create PayOS payment link
+        // Create PayOS payment link with the created order data
         console.log('💳 Creating new PayOS payment link...');
-        const result = await payOSService.createPaymentLink(parsed);
+        const result = await payOSService.createPaymentLink({
+          ...parsed,
+          orderId: orderResult.data.orderId,
+          orderNumber: orderToCreate.orderNumber
+        });
         
         if (result.success) {
           console.log('✅ PayOS payment created successfully:', {
@@ -98,14 +155,29 @@ const QRPayment = () => {
           
           setPaymentData(result.data);
           
+          // Update stored payment data with order information
+          const paymentDataWithOrder = {
+            ...result.data,
+            orderId: orderResult.data.orderId,
+            orderNumber: orderToCreate.orderNumber,
+            timestamp: new Date().toISOString()
+          };
+          
           // Store order data with payment info for return URL processing
           const orderWithPayment = {
             ...parsed,
             orderCode: result.data.orderCode,
+            orderId: orderResult.data.orderId,
+            orderNumber: orderToCreate.orderNumber,
             paymentMethod: 'PayOS',
             timestamp: new Date().toISOString()
           };
           localStorage.setItem('pendingOrder', JSON.stringify(orderWithPayment));
+          
+          // Start polling for payment status
+          setTimeout(() => {
+            startPaymentPolling(result.data.orderCode, orderResult.data.orderId);
+          }, 2000); // Start polling after 2 seconds
           
         } else {
           console.error('❌ Failed to create PayOS payment:', result.error);
@@ -117,6 +189,75 @@ const QRPayment = () => {
         setError(err.message || 'Có lỗi xảy ra khi khởi tạo thanh toán');
       } finally {
         setLoading(false);
+      }
+    };
+
+    // Start payment status polling
+    const startPaymentPolling = async (orderCode, orderId) => {
+      if (isPolling) return;
+      
+      setIsPolling(true);
+      console.log('🔄 Starting payment status polling...');
+      
+      try {
+        const pollResult = await payOSService.pollPaymentStatus(orderCode, {
+          maxAttempts: 60, // 5 minutes with 5-second intervals
+          interval: 5000,
+          onStatusChange: (statusData) => {
+            console.log('📊 Payment status update:', statusData);
+            setPollCount(prev => prev + 1);
+            
+            if (statusData.status === 'PAID' || statusData.status === 'paid') {
+              setPaymentStatus('paid');
+            }
+          }
+        });
+        
+        if (pollResult.success && pollResult.status === 'completed') {
+          console.log('✅ Payment completed, processing order...');
+          
+          // Update order status in Firestore
+          const payosData = {
+            orderCode: orderCode,
+            transactionId: pollResult.data.transactionId,
+            amount: pollResult.data.amountPaid || pollResult.data.amount,
+            additionalDetails: {
+              pollResult: pollResult.data,
+              transactions: pollResult.data.transactions
+            }
+          };
+
+          const orderService = await import('../services/orderService');
+          const updateResult = await orderService.default.markOrderAsPaid(orderId, payosData);
+          
+          if (updateResult.success) {
+            console.log('✅ Order updated successfully');
+            
+            // Clean up and redirect
+            payOSService.cleanupPaymentData();
+            localStorage.removeItem('orderData');
+            localStorage.removeItem('pendingOrder');
+            
+            // Redirect to order detail page
+            navigate(`/orders/${orderId}?payment=success`);
+          } else {
+            console.error('❌ Failed to update order:', updateResult.error);
+            setError('Thanh toán thành công nhưng không thể cập nhật đơn hàng');
+          }
+        } else if (pollResult.status === 'cancelled') {
+          console.log('❌ Payment was cancelled');
+          setPaymentStatus('cancelled');
+          setError('Thanh toán đã bị hủy');
+        } else if (pollResult.status === 'timeout') {
+          console.log('⏰ Payment polling timeout');
+          setError('Hết thời gian chờ. Vui lòng kiểm tra lại trạng thái thanh toán.');
+        }
+        
+      } catch (error) {
+        console.error('💥 Error during payment polling:', error);
+        setError('Có lỗi khi kiểm tra trạng thái thanh toán');
+      } finally {
+        setIsPolling(false);
       }
     };
 
@@ -161,7 +302,8 @@ const QRPayment = () => {
           <div className="container">
             <div className="loading-container">
               <Loading />
-              <p>Đang khởi tạo PayOS thanh toán...</p>
+              <p>Đang tạo đơn hàng và khởi tạo PayOS thanh toán...</p>
+              <small>Quá trình này có thể mất vài giây</small>
             </div>
           </div>
         </main>
@@ -301,6 +443,20 @@ VITE_PAYOS_CHECKSUM_KEY=your_checksum_key`}</pre>
                       <strong>📲 Quét mã QR</strong> bằng ứng dụng ngân hàng để thanh toán nhanh chóng
                     </p>
                     
+                    {/* Payment Status Indicator */}
+                    {isPolling && (
+                      <div className="payment-status-indicator">
+                        <div className="status-spinner"></div>
+                        <p>
+                          {paymentStatus === 'paid' 
+                            ? '✅ Thanh toán thành công! Đang xử lý...' 
+                            : `🔄 Đang chờ thanh toán... (${pollCount}/60)`
+                          }
+                        </p>
+                        <small>Hệ thống sẽ tự động cập nhật khi thanh toán thành công</small>
+                      </div>
+                    )}
+                    
                     {/* Bank Transfer Details */}
                     {(paymentData.accountNumber || paymentData.accountName) && (
                       <div className="bank-transfer-details">
@@ -373,6 +529,23 @@ VITE_PAYOS_CHECKSUM_KEY=your_checksum_key`}</pre>
                     </div>
                   </div>
                 )}
+                
+                {/* Checkout URL Button */}
+                {paymentData?.checkoutUrl && (
+                  <div className="checkout-url-section">
+                    <h4>💻 Hoặc thanh toán qua web:</h4>
+                    <a 
+                      href={paymentData.checkoutUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="checkout-url-btn"
+                    >
+                      Mở trang thanh toán PayOS
+                    </a>
+                    <small>Bạn sẽ được chuyển về trang này sau khi thanh toán thành công</small>
+                  </div>
+                )}
+                
                 <div className="security-badge">
                   <span>🔒 Được bảo mật bởi PayOS</span>
                 </div>
@@ -380,6 +553,58 @@ VITE_PAYOS_CHECKSUM_KEY=your_checksum_key`}</pre>
                   <p>Hỗ trợ khách hàng: support@matchanah.store</p>
                   <p>Hotline: +84 389822589</p>
                 </div>
+                
+                {/* Debug Section - Remove in production */}
+                {process.env.NODE_ENV === 'development' && paymentData?.orderCode && (
+                  <div className="debug-section" style={{
+                    marginTop: '2rem',
+                    padding: '1rem',
+                    background: '#fff3cd',
+                    border: '1px solid #ffeaa7',
+                    borderRadius: '8px',
+                    fontSize: '0.875rem'
+                  }}>
+                    <h4 style={{ margin: '0 0 1rem 0', color: '#856404' }}>🧪 Debug Info (Development Only)</h4>
+                    <div style={{ marginBottom: '1rem' }}>
+                      <strong>Order Code:</strong> {paymentData.orderCode}<br />
+                      <strong>Amount:</strong> {paymentData.amount}<br />
+                      <strong>Return URL:</strong> {new URL(window.location.origin + '/payment-return').href}
+                    </div>
+                    <button 
+                      onClick={() => {
+                        const returnUrl = `${window.location.origin}/payment-return?code=00&id=${paymentData.orderCode}&cancel=false&status=PAID&orderCode=${paymentData.orderCode}&success=true`;
+                        window.open(returnUrl, '_blank');
+                      }}
+                      style={{
+                        background: '#28a745',
+                        color: 'white',
+                        border: 'none',
+                        padding: '8px 16px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        marginRight: '1rem'
+                      }}
+                    >
+                      🧪 Simulate Successful Payment
+                    </button>
+                    <button 
+                      onClick={() => {
+                        const cancelUrl = `${window.location.origin}/payment-return?cancel=true&orderCode=${paymentData.orderCode}`;
+                        window.open(cancelUrl, '_blank');
+                      }}
+                      style={{
+                        background: '#dc3545',
+                        color: 'white',
+                        border: 'none',
+                        padding: '8px 16px',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      🧪 Simulate Cancelled Payment
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

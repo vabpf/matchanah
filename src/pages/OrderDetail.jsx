@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Loading from '../components/Loading';
@@ -12,10 +12,12 @@ const OrderDetail = () => {
   const { user, isAuthenticated } = useAuth();
   const { fetchOrder, cancelOrder } = useOrders();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   
   const [order, setOrder] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -23,10 +25,21 @@ const OrderDetail = () => {
       return;
     }
 
+    // Check if redirected from payment success
+    const paymentStatus = searchParams.get('payment');
+    if (paymentStatus === 'success') {
+      setShowPaymentSuccess(true);
+      // Remove the payment parameter from URL after 5 seconds
+      setTimeout(() => {
+        navigate(`/orders/${orderId}`, { replace: true });
+        setShowPaymentSuccess(false);
+      }, 5000);
+    }
+
     if (orderId) {
       loadOrderDetail();
     }
-  }, [orderId, isAuthenticated, navigate]);
+  }, [orderId, isAuthenticated, navigate, searchParams]);
 
   const loadOrderDetail = async () => {
     setIsLoading(true);
@@ -172,6 +185,19 @@ const OrderDetail = () => {
       <main className="order-detail-main">
         <section className="order-detail-content">
           <div className="container">
+            {/* Payment Success Banner */}
+            {showPaymentSuccess && (
+              <div className="payment-success-banner">
+                <div className="success-content">
+                  <span className="success-icon">🎉</span>
+                  <div className="success-text">
+                    <h3>Thanh toán thành công!</h3>
+                    <p>Đơn hàng của bạn đã được thanh toán và đang được xử lý.</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
             <div className="order-header">
               <div className="order-info">
                 <h1>Chi tiết đơn hàng #{order.orderNumber}</h1>
