@@ -10,8 +10,6 @@ const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
     price,
     originalPrice,
     discount,
-    rating,
-    reviewCount,
     image,
     description,
     inStock,
@@ -24,27 +22,6 @@ const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
       style: 'currency',
       currency: 'VND'
     }).format(price);
-  };
-
-  const renderStars = (rating) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(<span key={i} className="star filled">★</span>);
-    }
-
-    if (hasHalfStar) {
-      stars.push(<span key="half" className="star half">★</span>);
-    }
-
-    const emptyStars = 5 - Math.ceil(rating);
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push(<span key={`empty-${i}`} className="star empty">★</span>);
-    }
-
-    return stars;
   };
 
   const handleAddToCart = () => {
@@ -104,14 +81,7 @@ const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
         )}
       </div>
       
-      <div className="product-details">
-        <div className="product-rating">
-          <div className="stars">
-            {renderStars(rating)}
-          </div>
-          <span className="review-count">({reviewCount} đánh giá)</span>
-        </div>
-        
+      <div className="product-details">        
         <div className="product-info">
           <h3 
             className="product-title"

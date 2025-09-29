@@ -50,9 +50,36 @@ const Footer = () => {
           </div>
           <div className="social_ico">
             <ul className="list-unstyled list-social">
-              <li><a href="#" className="link list-social__link">Facebook</a></li>
-              <li><a href="#" className="link list-social__link">Instagram</a></li>
-              <li><a href="#" className="link list-social__link">Tiktok</a></li>
+              <li>
+                <a
+                  href="https://www.facebook.com/profile.php?id=61580900723277"
+                  className="link list-social__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Facebook
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.instagram.com/matchanah.since2025"
+                  className="link list-social__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Instagram
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.threads.com/@matchanah.since2025"
+                  className="link list-social__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Threads
+                </a>
+              </li>
             </ul>
           </div>
         </div>

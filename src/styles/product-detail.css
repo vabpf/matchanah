@@ -126,19 +126,6 @@ h1.product-title {
     line-height: 1.2;
 }
 
-.product-rating-section {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.product-rating {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
 .stars {
     display: flex;
     gap: 2px;
@@ -329,6 +316,7 @@ h1.product-title {
 }
 
 .buy-now-btn {
+    width: 100%;
     flex: 1;
     padding: 15px 30px;
     background: white;

@@ -91,7 +91,7 @@ const Header = () => {
           <Navigation />
         </div>
 
-        {/* Desktop User & Cart Actions */}
+        {/* User & Cart Actions */}
         <div className="header-actions">
           {/* User Menu */}
           {isAuthenticated ? (
@@ -110,7 +110,7 @@ const Header = () => {
                   {user?.displayName || user?.email?.split('@')[0]}
                 </span>
                 <svg 
-                  className={`dropdown-arrow ${isUserMenuOpen ? 'open' : ''}`}
+                  className={`dropdown-arrow desktop-only ${isUserMenuOpen ? 'open' : ''}`}
                   width="16" 
                   height="16" 
                   viewBox="0 0 24 24" 
@@ -201,8 +201,8 @@ const Header = () => {
             </div>
           )}
 
-          {/* Desktop Cart Button */}
-          <Link to="/cart" className="desktop-cart-button">
+          {/* Cart Button */}
+          <Link to="/cart" className="cart-button">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16 5 16H17M17 13V17C17 18.1 16.1 19 15 19H9C7.9 19 7 18.1 7 17V13M9 13V17M11 13V17M13 13V17M15 13V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
@@ -211,16 +211,6 @@ const Header = () => {
             )}
           </Link>
         </div>
-
-        {/* Mobile Cart Button - Right */}
-        <Link to="/cart" className="mobile-cart-button">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16 5 16H17M17 13V17C17 18.1 16.1 19 15 19H9C7.9 19 7 18.1 7 17V13M9 13V17M11 13V17M13 13V17M15 13V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          {cartItemCount > 0 && (
-            <span className="cart-badge">{cartItemCount}</span>
-          )}
-        </Link>
       </div>
 
       {/* Mobile Navigation Overlay */}

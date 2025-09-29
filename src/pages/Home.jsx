@@ -28,18 +28,15 @@ const Home = () => {
             <div className="product-carousel">
               <div className="featured-product-card">
                 <div className="product-image">
-                  <img src="/src/assets/images/product-sample.jpg" alt="Hộp Matcha Hỗn Hợp" />
-                  <span className="discount-badge">Tiết kiệm 33%</span>
+                  <img src="/images/combo 1.png" alt="Hộp Matcha Hỗn Hợp" />
+                  <span className="discount-badge">Tiết kiệm 10%</span>
                 </div>
                 <div className="product-details">
-                  <div className="product-rating">
-                    ⭐⭐⭐⭐⭐
-                  </div>
                   <div className="product-info">
-                    <h3 className="product-title">Combo Matcha Natsu full dụng cụ</h3>
+                    <h3 className="product-title">Combo cơ bản dành cho người mới</h3>
                     <div className="product-price">
-                      <span className="current-price">199.000₫</span>
-                      <span className="original-price">300.000₫</span>
+                      <span className="current-price">232.000₫</span>
+                      <span className="original-price">258.000₫</span>
                     </div>
                   </div>
                 </div>
@@ -47,18 +44,15 @@ const Home = () => {
 
               <div className="featured-product-card">
                 <div className="product-image">
-                  <img src="/src/assets/images/product-sample.jpg" alt="Hộp Matcha Kem" />
-                  <span className="discount-badge">Tiết kiệm 33%</span>
+                  <img src="/images/combo 2.png" alt="Hộp Matcha Kem" />
+                  <span className="discount-badge">Tiết kiệm 10%</span>
                 </div>
                 <div className="product-details">
-                  <div className="product-rating">
-                    ⭐⭐⭐⭐⭐
-                  </div>
                   <div className="product-info">
-                    <h3 className="product-title">Combo 3 loại Matcha 50g</h3>
+                    <h3 className="product-title">Combo "Sơ cấp Matcha" - 2</h3>
                     <div className="product-price">
-                      <span className="current-price">199.000₫</span>
-                      <span className="original-price">300.000₫</span>
+                      <span className="current-price">492.000₫</span>
+                      <span className="original-price">547.000₫</span>
                     </div>
                   </div>
                 </div>
@@ -66,18 +60,15 @@ const Home = () => {
 
               <div className="featured-product-card">
                 <div className="product-image">
-                  <img src="/src/assets/images/product-sample.jpg" alt="Hộp Matcha Trái Cây" />
-                  <span className="discount-badge">Tiết kiệm 33%</span>
+                  <img src="/images/combo 3.png" alt="Hộp Matcha Trái Cây" />
+                  <span className="discount-badge">Tiết kiệm 10%</span>
                 </div>
                 <div className="product-details">
-                  <div className="product-rating">
-                    ⭐⭐⭐⭐⭐
-                  </div>
                   <div className="product-info">
-                    <h3 className="product-title">Combo Matcha Natsu kèm sữa</h3>
+                    <h3 className="product-title">Combo "Bậc thầy Trà đạo" - 3</h3>
                     <div className="product-price">
-                      <span className="current-price">199.000₫</span>
-                      <span className="original-price">300.000₫</span>
+                      <span className="current-price">698.000₫</span>
+                      <span className="original-price">776.000₫</span>
                     </div>
                   </div>
                 </div>

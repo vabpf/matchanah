@@ -240,7 +240,7 @@ const VietQRPayment = ({ orderData, onSuccess, onCancel }) => {
 
       <div className="security-note">
         <p>🔒 Thanh toán được bảo mật qua hệ thống VietQR</p>
-        <p>💬 Liên hệ hỗ trợ: support@matchanah.com</p>
+        <p>💬 Liên hệ hỗ trợ: support@matchanah.store</p>
       </div>
     </div>
   );

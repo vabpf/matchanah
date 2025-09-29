@@ -50,7 +50,7 @@
   .grid-container { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
 }
 @media (max-width:968px){
-  .floating-header { width:98%; top:10px; }
+  .floating-header { top:10px; }
   .header-container { padding:12px 20px; }
   .hero-text { max-width:50%; }
   .hero-main-title { font-size:3.5rem; line-height:3rem; }

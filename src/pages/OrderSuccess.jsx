@@ -152,7 +152,7 @@ const OrderSuccess = () => {
                   Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ với chúng tôi qua:
                 </p>
                 <p>
-                  Email: <a href="mailto:support@matchanah.com">support@matchanah.com</a><br/>
+                  Email: <a href="mailto:support@matchanah.store">support@matchanah.store</a><br/>
                   Điện thoại: <a href="tel:+84123456789">+84 123 456 789</a>
                 </p>
               </div>

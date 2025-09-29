@@ -406,8 +406,8 @@
     color: #e53e3e;
 }
 
-/* Desktop Cart Button */
-.desktop-cart-button {
+/* Cart Button (unified for desktop and mobile) */
+.cart-button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -421,7 +421,7 @@
     transition: all 0.3s ease;
 }
 
-.desktop-cart-button:hover {
+.cart-button:hover {
     background: #1e3d2a;
 }
 
@@ -487,35 +487,6 @@
 /* Utility classes */
 .desktop-only {
     display: block;
-}
-
-@media (max-width: 768px) {
-    .desktop-only {
-        display: none;
-    }
-    
-    .header-actions {
-        display: none;
-    }
-}
-
-/* Mobile Cart Button */
-.mobile-cart-button {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    background: #2d5a3d;
-    color: white;
-    border-radius: 12px;
-    text-decoration: none;
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-.mobile-cart-button:hover {
-    background: #1e3d2a;
 }
 
 .cart-badge {
@@ -656,12 +627,13 @@
         display: block;
     }
     
-    .mobile-cart-button {
-        display: flex;
-    }
-    
     /* Hide desktop navigation */
     .desktop-navigation {
+        display: none;
+    }
+    
+    /* Hide desktop-only elements */
+    .desktop-only {
         display: none;
     }
     
@@ -686,6 +658,29 @@
     
     .floating-header.scrolled .brand-name {
         font-size: 1.1rem;
+    }
+    
+    /* Make header actions compact for mobile */
+    .header-actions {
+        display: flex;
+        gap: 0.2rem !important;
+        align-items: center;
+    }
+    
+    /* Simplify user menu trigger for mobile */
+    .user-menu-trigger {
+        padding: 0.5rem;
+        gap: 0;
+    }
+    
+    .user-menu-trigger .user-name {
+        display: none;
+    }
+    
+    /* Make cart button smaller on mobile */
+    .cart-button {
+        width: 40px;
+        height: 40px;
     }
 }
 
@@ -718,9 +713,9 @@
         font-size: 1rem;
     }
     
-    .mobile-cart-button {
-        width: 40px;
-        height: 40px;
+    .cart-button {
+        width: 36px;
+        height: 36px;
     }
     
     .navigation.mobile-nav {

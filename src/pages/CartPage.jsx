@@ -126,7 +126,7 @@ const CartPage = () => {
               <div className="shipping-form">
                 <div className="form-row">
                   <div className="form-group">
-                    <label>Họ tên người nhận</label>
+                    <label>Họ tên người nhận  <span className="required">*</span></label>
                     <input
                       type="text"
                       value={shippingInfo.receiverName}
@@ -135,7 +135,7 @@ const CartPage = () => {
                     />
                   </div>
                   <div className="form-group">
-                    <label>Số điện thoại</label>
+                    <label>Số điện thoại  <span className="required">*</span></label>
                     <input
                       type="text"
                       value={shippingInfo.phone}
@@ -147,7 +147,7 @@ const CartPage = () => {
                 
                 <div className="form-row">
                   <div className="form-group">
-                    <label>Tỉnh / Thành phố</label>
+                    <label>Tỉnh / Thành phố  <span className="required">*</span></label>
                     <input
                       type="text"
                       value={shippingInfo.province}
@@ -156,7 +156,7 @@ const CartPage = () => {
                     />
                   </div>
                   <div className="form-group">
-                    <label>Quận / Huyện</label>
+                    <label>Quận / Huyện  <span className="required">*</span></label>
                     <input
                       type="text"
                       value={shippingInfo.district}
@@ -168,7 +168,7 @@ const CartPage = () => {
                 
                 <div className="form-row">
                   <div className="form-group">
-                    <label>Phường / Xã</label>
+                    <label>Phường / Xã  <span className="required">*</span></label>
                     <input
                       type="text"
                       value={shippingInfo.ward}
@@ -177,7 +177,7 @@ const CartPage = () => {
                     />
                   </div>
                   <div className="form-group">
-                    <label>Địa chỉ chi tiết</label>
+                    <label>Địa chỉ chi tiết  <span className="required">*</span></label>
                     <input
                       type="text"
                       value={shippingInfo.address}

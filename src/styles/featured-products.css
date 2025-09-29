@@ -85,13 +85,6 @@
     padding: 20px;
 }
 
-.featured-products .product-rating {
-    text-align: left;
-    margin-bottom: 15px;
-    font-size: 1rem;
-    color: #ffc107;
-}
-
 .featured-products .product-info {
     display: flex;
     justify-content: space-between;

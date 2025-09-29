@@ -135,27 +135,6 @@ const ProductDetail = () => {
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
-  const renderStars = (rating) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(<span key={i} className="star filled">★</span>);
-    }
-
-    if (hasHalfStar) {
-      stars.push(<span key="half" className="star half">★</span>);
-    }
-
-    const emptyStars = 5 - Math.ceil(rating);
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push(<span key={`empty-${i}`} className="star">☆</span>);
-    }
-
-    return stars;
-  };
-
   return (
     <div className="product-detail-page">
       <Header />
@@ -193,14 +172,6 @@ const ProductDetail = () => {
               {/* Product Info */}
               <div className="product-info-section">
                 <h1 className="product-title">{product.name}</h1>
-                
-                <div className="product-rating-section">
-                  <div className="product-rating">
-                    <div className="stars">{renderStars(product.rating)}</div>
-                    <span className="review-count">({product.reviewCount} đánh giá)</span>
-                  </div>
-                  <span className="based-on-reviews">Dựa trên {product.reviewCount} đánh giá</span>
-                </div>
 
                 <div className="product-price-section">
                   <div className="price-row">

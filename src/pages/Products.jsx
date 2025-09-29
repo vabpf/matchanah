@@ -55,14 +55,11 @@ const Products = () => {
         return sorted.sort((a, b) => b.price - a.price);
       case 'name':
         return sorted.sort((a, b) => a.name.localeCompare(b.name, 'vi'));
-      case 'rating':
-        return sorted.sort((a, b) => b.rating - a.rating);
       case 'featured':
       default:
         return sorted.sort((a, b) => {
           if (a.featured && !b.featured) return -1;
           if (!a.featured && b.featured) return 1;
-          return b.rating - a.rating;
         });
     }
   };
@@ -136,7 +133,6 @@ const Products = () => {
                     <option value="price-low">Giá thấp đến cao</option>
                     <option value="price-high">Giá cao đến thấp</option>
                     <option value="name">Tên A-Z</option>
-                    <option value="rating">Đánh giá cao nhất</option>
                   </select>
                 </div>
               </div>
